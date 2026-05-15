@@ -1,0 +1,3015 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agency OS - Панель управления</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1a73e8;
+            --primary-light: #f8f9fa;
+            --border-color: #e0e0e0;
+            --text-dark: #202124;
+            --text-light: #5f6368;
+            --success-color: #1e8e3e;
+            --warning-color: #f57c00;
+            --danger-color: #d32f2f;
+            --sidebar-width: 280px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background-color: #ffffff;
+            color: var(--text-dark);
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+            border-right: 1px solid var(--border-color);
+            padding: 24px 16px;
+            overflow-y: auto;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 32px;
+            padding: 12px;
+        }
+
+        .workspace-section {
+            margin-bottom: 24px;
+        }
+
+        .workspace-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            padding: 0 8px;
+        }
+
+        .workspace-item {
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-left: 4px solid transparent;
+            font-size: 14px;
+            color: var(--text-dark);
+        }
+
+        .workspace-item:hover {
+            background-color: rgba(26, 115, 232, 0.08);
+            border-left-color: var(--primary-color);
+        }
+
+        .workspace-item.active {
+            background-color: rgba(26, 115, 232, 0.12);
+            border-left-color: var(--primary-color);
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .header {
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 32px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .workspace-tabs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-light);
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .tab:hover {
+            color: var(--text-dark);
+            background-color: rgba(26, 115, 232, 0.05);
+        }
+
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+            background-color: rgba(26, 115, 232, 0.08);
+        }
+
+        .header-subtitle {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-top: 0;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), #5f9df7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px;
+            background-color: #fafbfc;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+            transition: all 0.2s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-color: rgba(26, 115, 232, 0.2);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        /* Clients */
+        .clients-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .client-item {
+            padding: 12px;
+            background-color: var(--primary-light);
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--text-dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .client-status {
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background-color: rgba(30, 142, 62, 0.1);
+            color: var(--success-color);
+            font-weight: 500;
+        }
+
+        /* Tasks */
+        .tasks-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .task-item {
+            padding: 12px;
+            background-color: var(--primary-light);
+            border-radius: 8px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .task-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary-color);
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .task-checkbox:hover {
+            background-color: rgba(26, 115, 232, 0.1);
+        }
+
+        .task-checkbox.checked {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .task-text {
+            flex: 1;
+            color: var(--text-dark);
+        }
+
+        .task-item.completed .task-text {
+            text-decoration: line-through;
+            color: var(--text-light);
+        }
+
+        .task-priority {
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        .priority-high {
+            background-color: rgba(211, 47, 47, 0.1);
+            color: var(--danger-color);
+        }
+
+        .priority-medium {
+            background-color: rgba(245, 124, 0, 0.1);
+            color: var(--warning-color);
+        }
+
+        .priority-low {
+            background-color: rgba(30, 142, 62, 0.1);
+            color: var(--success-color);
+        }
+
+        /* Budget */
+        .budget-item {
+            margin-bottom: 16px;
+        }
+
+        .budget-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .budget-value {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: var(--primary-light);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), #5f9df7);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* KPI Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .metric-box {
+            background-color: var(--primary-light);
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 4px;
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* Team */
+        .team-members {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .team-member {
+            text-align: center;
+            padding: 12px;
+            background-color: var(--primary-light);
+            border-radius: 8px;
+        }
+
+        .member-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            margin: 0 auto 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 16px;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .member-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .member-role {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        /* Full Width Sections */
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .event-form {
+            display: grid;
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .form-label {
+            min-width: 140px;
+            font-size: 13px;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .form-input,
+        .form-select {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background: #fff;
+            color: var(--text-dark);
+            font-size: 13px;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 8px;
+        }
+
+        .button-primary {
+            border: none;
+            color: white;
+            background-color: var(--primary-color);
+            padding: 12px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s ease;
+        }
+
+        .button-primary:hover {
+            background-color: #1558c3;
+        }
+
+        .finance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+        }
+
+        .finance-table th,
+        .finance-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: left;
+            font-size: 13px;
+        }
+
+        .finance-table th {
+            color: var(--text-light);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .finance-table tbody tr:hover {
+            background-color: rgba(26, 115, 232, 0.05);
+        }
+
+        .transaction-status {
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .status-pending {
+            background-color: rgba(245, 124, 0, 0.12);
+            color: var(--warning-color);
+        }
+
+        .status-done {
+            background-color: rgba(30, 142, 62, 0.12);
+            color: var(--success-color);
+        }
+
+        .finance-summary {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .finance-summary-card {
+            flex: 1;
+            min-width: 220px;
+            padding: 18px;
+            border-radius: 12px;
+            background-color: var(--primary-light);
+            border: 1px solid transparent;
+        }
+
+        .finance-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 18px 0;
+        }
+
+        .filter-input {
+            flex: 1;
+            min-width: 140px;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background: #fff;
+            color: var(--text-dark);
+            font-size: 13px;
+        }
+
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.08);
+        }
+
+        .finance-summary-card strong {
+            display: block;
+            font-size: 20px;
+            margin-top: 8px;
+            color: var(--text-dark);
+        }
+
+        .finance-summary-card span {
+            display: block;
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        /* Section Navigation */
+        .section-nav {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+        }
+
+        .section-link {
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-light);
+            background: transparent;
+            border: none;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .section-link:hover {
+            color: var(--primary-color);
+            background-color: rgba(26, 115, 232, 0.08);
+        }
+
+        .section-link.active {
+            color: var(--primary-color);
+            background-color: rgba(26, 115, 232, 0.12);
+        }
+
+        /* Client Cards */
+        .clients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .client-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .client-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .client-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .client-logo {
+            width: 56px;
+            height: 56px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            flex-shrink: 0;
+        }
+
+        .client-header-info {
+            flex: 1;
+        }
+
+        .client-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .client-category {
+            font-size: 12px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .client-status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .status-active {
+            background-color: rgba(30, 142, 62, 0.1);
+            color: var(--success-color);
+        }
+
+        .status-pause {
+            background-color: rgba(245, 124, 0, 0.1);
+            color: var(--warning-color);
+        }
+
+        .status-completed {
+            background-color: rgba(158, 158, 158, 0.1);
+            color: #5f6368;
+        }
+
+        .client-divider {
+            height: 1px;
+            background-color: var(--border-color);
+            margin: 12px 0;
+        }
+
+        .client-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+
+        .client-info-label {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .client-info-value {
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .client-contact {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .client-contact-link {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .client-contact-link:hover {
+            text-decoration: underline;
+        }
+
+        .client-projects {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+
+        .project-tag {
+            background-color: var(--primary-light);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            color: var(--text-dark);
+        }
+
+        .client-progress {
+            margin-top: 12px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 6px;
+            color: var(--text-light);
+        }
+
+        .client-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .client-budget {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #999;
+        }
+
+        /* Launch progress */
+        .launch-progress-bar { width:100%; height:6px; background:var(--primary-light); border-radius:3px; overflow:hidden; margin:4px 0 10px; }
+        .launch-progress-fill { height:100%; background:linear-gradient(90deg, var(--primary-color), #43e97b); border-radius:3px; transition:width 0.3s ease; }
+
+        /* Calendar */
+        .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:1px; background:var(--border-color); border:1px solid var(--border-color); border-radius:12px; overflow:hidden; }
+        .cal-header-cell { background:var(--primary-light); padding:10px; text-align:center; font-size:12px; font-weight:600; color:var(--text-light); }
+        .cal-cell { background:white; padding:8px; min-height:110px; }
+        .cal-cell-empty { background:#fafbfc; padding:8px; min-height:110px; }
+        .cal-cell-today { background:rgba(26,115,232,0.04); }
+        .cal-day-num { font-size:13px; font-weight:500; color:var(--text-dark); margin-bottom:4px; line-height:1; }
+        .cal-day-num.today { font-weight:700; color:var(--primary-color); }
+        .cal-item { font-size:11px; border-radius:4px; padding:2px 6px; margin-bottom:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; cursor:default; }
+
+        /* Employee cards */
+        .employee-card { background:white; border:1px solid var(--border-color); border-radius:12px; padding:20px; transition:all 0.2s ease; }
+        .employee-card:hover { box-shadow:0 4px 12px rgba(0,0,0,0.08); border-color:rgba(26,115,232,0.2); }
+        .ws-badge { display:inline-block; font-size:11px; padding:2px 8px; border-radius:4px; background:rgba(26,115,232,0.1); color:var(--primary-color); margin:2px; font-weight:500; }
+
+        /* Login screen */
+        #login-screen {
+            position: fixed; top:0; left:0; right:0; bottom:0;
+            background: #f0f2f5;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999;
+        }
+        .login-box {
+            background: white; border-radius: 20px; padding: 48px 40px;
+            width: 420px; max-width: 90vw;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+        }
+        .login-logo { font-size: 26px; font-weight: 700; color: var(--primary-color); margin-bottom: 8px; }
+        .login-heading { font-size: 22px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
+        .login-subtitle { font-size: 14px; color: var(--text-light); margin-bottom: 32px; }
+        .login-label { display: block; font-size: 11px; font-weight: 700; color: var(--text-light); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .login-input { width: 100%; padding: 12px 14px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 14px; color: var(--text-dark); box-sizing: border-box; margin-bottom: 16px; }
+        .login-input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(26,115,232,0.1); }
+        .login-error { color: var(--danger-color); font-size: 13px; margin-bottom: 12px; display: none; }
+
+        @media (max-width: 1400px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="login-screen">
+        <div class="login-box">
+            <div class="login-logo">🚀 Agency OS</div>
+            <div class="login-heading">Добро пожаловать</div>
+            <div class="login-subtitle">Войдите для доступа к системе</div>
+            <form onsubmit="return login(event)">
+                <label class="login-label" for="login-email">Email</label>
+                <input id="login-email" class="login-input" type="email" placeholder="your@email.com" required autocomplete="email" />
+                <label class="login-label" for="login-password">Пароль</label>
+                <input id="login-password" class="login-input" type="password" placeholder="••••••••" required />
+                <div id="login-error" class="login-error">Неверный email или пароль</div>
+                <button type="submit" class="button-primary" style="width:100%; padding:14px; font-size:15px; margin-top:4px;">Войти</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">🚀 Agency OS</div>
+            
+            <div class="workspace-section">
+                <div class="workspace-section-title">Меню</div>
+                <div class="workspace-item" data-view="tasktracker" onclick="switchGlobalView('tasktracker')">📅 Общий таск-трекер</div>
+                <div class="workspace-item" data-view="tasks" onclick="switchGlobalView('tasks')">✓ Мои задачи</div>
+                <div class="workspace-item" data-view="employees" onclick="switchGlobalView('employees')">👥 Сотрудники</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div class="header-top">
+                    <div class="header-title">Agency OS</div>
+                    <div class="workspace-tabs" id="workspace-tabs">
+                        <!-- Tabs will be generated by JS -->
+                    </div>
+                    <div class="user-info">
+                        <div>
+                            <div style="font-size: 14px; font-weight: 500;" id="user-display-name">—</div>
+                            <div style="font-size: 12px; color: var(--text-light);" id="user-display-role">—</div>
+                        </div>
+                        <div class="user-avatar" id="user-display-initials" onclick="logout()" style="cursor:pointer;" title="Выйти">—</div>
+                    </div>
+                </div>
+                <div style="padding: 16px 0;">
+                    <div class="header-title" id="workspace-title" style="font-size: 20px; margin-bottom: 4px;">Ignite Digital Agency</div>
+                    <div class="header-subtitle" id="workspace-subtitle">Real estate marketing</div>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="section-nav" id="section-nav">
+                    <!-- Section links will be generated by JS -->
+                </div>
+                <div id="dashboard">
+                    <!-- Content will be dynamically loaded -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const workspaces = [
+            {
+                title: 'Ignite Digital Agency',
+                emoji: '🏢',
+                subtitle: 'Real estate marketing',
+                clients: [
+                    {
+                        id: 1,
+                        name: 'Апартаменты Люкс',
+                        category: 'Жилой комплекс',
+                        status: 'active',
+                        contact: 'Иван Морозов',
+                        contactRole: 'Генеральный директор',
+                        email: 'ivan@luxapart.ru',
+                        phone: '+7 (999) 111-22-33',
+                        budget: '₽450,000',
+                        spent: '₽315,000',
+                        progress: 70,
+                        projects: ['Сайт', 'SEO', 'Реклама', 'Дизайн'],
+                        nextMeeting: '2026-05-18',
+                        logo: '🏢'
+                    },
+                    {
+                        id: 2,
+                        name: 'Riches Properties',
+                        category: 'Агентство недвижимости',
+                        status: 'active',
+                        contact: 'Мария Кольцова',
+                        contactRole: 'Менеджер по маркетингу',
+                        email: 'maria@riches.com',
+                        phone: '+7 (999) 333-44-55',
+                        budget: '₽320,000',
+                        spent: '₽224,000',
+                        progress: 70,
+                        projects: ['Реклама', 'SMM', 'Email'],
+                        nextMeeting: '2026-05-20',
+                        logo: '🏛️'
+                    },
+                    {
+                        id: 3,
+                        name: 'Prime Housing',
+                        category: 'Девелопер',
+                        status: 'active',
+                        contact: 'Сергей Волков',
+                        contactRole: 'Директор проектов',
+                        email: 'sergey@prime.ru',
+                        phone: '+7 (999) 555-66-77',
+                        budget: '₽280,000',
+                        spent: '₽112,000',
+                        progress: 40,
+                        projects: ['Контент', 'Видео', 'Аналитика'],
+                        nextMeeting: '2026-05-19',
+                        logo: '🏗️'
+                    }
+                ],
+                tasks: [
+                    { text: 'Создать рекламную кампанию', priority: 'high' },
+                    { text: 'Обновить портфолио объектов', priority: 'high' },
+                    { text: 'Провести встречу с клиентом', priority: 'medium' },
+                    { text: 'Подготовить аналитику продаж', priority: 'low' }
+                ],
+                budget: {
+                    total: '₽250,000',
+                    spent: '₽167,500',
+                    percent: 67
+                },
+                kpi: [
+                    { label: 'ROI', value: '+320%' },
+                    { label: 'Лиды', value: '147' },
+                    { label: 'Конверсия', value: '18.5%' },
+                    { label: 'Бюджет', value: '67% ✓' }
+                ],
+                team: [
+                    { name: 'Иван Сидоров', role: 'SEO специалист', initials: 'ИС' },
+                    { name: 'Мария Кузнецова', role: 'Копирайтер', initials: 'МК' },
+                    { name: 'Петр Васильев', role: 'Дизайнер', initials: 'ПВ' }
+                ]
+            },
+            {
+                title: 'Noise Dealers',
+                emoji: '🎵',
+                subtitle: 'Event marketing',
+                clients: [
+                    {
+                        id: 1,
+                        name: 'Profconcerts',
+                        category: 'Продвижение мероприятий',
+                        status: 'active',
+                        contact: 'Алина Буйлова',
+                        contactRole: 'Client Success',
+                        email: 'alina@profconcerts.ru',
+                        phone: '+7 (999) 888-77-66',
+                        budget: '€0',
+                        spent: '€0',
+                        progress: 30,
+                        projects: ['Запуск рекламы', 'Оптимизация', 'Отчётность'],
+                        nextMeeting: '2026-05-25',
+                        logo: '🎵'
+                    },
+                    {
+                        id: 2,
+                        name: 'Celebrity Gala',
+                        category: 'Ивент-сервис премиум',
+                        status: 'active',
+                        contact: 'Даша Львова',
+                        contactRole: 'Руководитель проекта',
+                        email: 'dasha@celebritygala.com',
+                        phone: '+7 (999) 222-11-00',
+                        budget: '€0',
+                        spent: '€0',
+                        progress: 20,
+                        projects: ['Подготовка пакета', 'Медиаплан', 'Отчёты'],
+                        nextMeeting: '2026-05-26',
+                        logo: '🎬'
+                    }
+                ],
+                tasks: [
+                    { text: 'Согласовать билеты', priority: 'high' },
+                    { text: 'Подготовить пресс-релиз', priority: 'high' },
+                    { text: 'Связаться с влиятельными лицами', priority: 'medium' },
+                    { text: 'Обновить расписание событий', priority: 'low' }
+                ],
+                budget: {
+                    total: '₽180,000',
+                    spent: '₽108,000',
+                    percent: 60
+                },
+                kpi: [
+                    { label: 'ROI', value: '+245%' },
+                    { label: 'Посещаемость', value: '8.5K' },
+                    { label: 'Виральность', value: '4.2M' },
+                    { label: 'Бюджет', value: '60% ✓' }
+                ],
+                team: [
+                    { name: 'Даша Львова', role: 'Проджект Маркетинг Менеджер', initials: 'ДЛ' },
+                    { name: 'Алина Буйлова', role: 'Перфоманс-специалист', initials: 'АБ' },
+                    { name: 'Анна Морозова', role: 'Event менеджер', initials: 'АМ' }
+                ],
+                events: [],
+                transactions: []
+            },
+            {
+                title: 'Прочее',
+                emoji: '📋',
+                subtitle: 'Различные проекты',
+                clients: [
+                    {
+                        id: 1,
+                        name: 'Startup Hub',
+                        category: 'Стартап-инкубатор',
+                        status: 'active',
+                        contact: 'Артём Цветов',
+                        contactRole: 'Основатель',
+                        email: 'artem@startuphub.ru',
+                        phone: '+7 (999) 123-45-67',
+                        budget: '₽300,000',
+                        spent: '₽225,000',
+                        progress: 75,
+                        projects: ['Брендинг', 'Сайт', 'SMM', 'Фото'],
+                        nextMeeting: '2026-05-23',
+                        logo: '🚀'
+                    },
+                    {
+                        id: 2,
+                        name: 'Digital Academy',
+                        category: 'Онлайн-школа',
+                        status: 'active',
+                        contact: 'Елена Борисова',
+                        contactRole: 'Директор',
+                        email: 'elena@digilearn.ru',
+                        phone: '+7 (999) 234-56-78',
+                        budget: '₽250,000',
+                        spent: '₽150,000',
+                        progress: 60,
+                        projects: ['LMS', 'Курсы', 'Email', 'Вебинары'],
+                        nextMeeting: '2026-05-24',
+                        logo: '📚'
+                    }
+                ],
+                tasks: [
+                    { text: 'Внутренние встречи коллектива', priority: 'low' },
+                    { text: 'Обновить внутренние процессы', priority: 'medium' },
+                    { text: 'Проверить документацию', priority: 'low' }
+                ],
+                budget: {
+                    total: '₽100,000',
+                    spent: '₽45,000',
+                    percent: 45
+                },
+                kpi: [
+                    { label: 'Проекты', value: '12' },
+                    { label: 'Команда', value: '24' },
+                    { label: 'Качество', value: '94%' },
+                    { label: 'Бюджет', value: '45% ✓' }
+                ],
+                team: [
+                    { name: 'Олег Смирнов', role: 'Project Manager', initials: 'ОС' },
+                    { name: 'Елена Ефимова', role: 'Аналитик', initials: 'ЕЕ' },
+                    { name: 'Сергей Львов', role: 'Системный администратор', initials: 'СЛ' }
+                ]
+            }
+        ];
+
+        function switchWorkspace(index, element) {
+            currentGlobalView = null;
+            document.querySelectorAll('.workspace-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            element.classList.add('active');
+            currentWorkspace = index;
+            
+            // Update title and subtitle
+            document.getElementById('workspace-title').textContent = workspaces[index].title;
+            document.getElementById('workspace-subtitle').textContent = workspaces[index].subtitle;
+            
+            renderSectionNav();
+            renderSection('overview');
+        }
+
+        function renderSectionNav() {
+            const workspace = workspaces[currentWorkspace];
+            const sections = workspace.title === 'Noise Dealers'
+                ? ['overview', 'events', 'clients', 'tasks', 'finance', 'kpi', 'team']
+                : ['overview', 'projects', 'clients', 'tasks', 'finance', 'kpi', 'team'];
+            const sectionLabels = {
+                overview: '📊 Обзор',
+                events: '🎪 Ивенты',
+                projects: '📁 Проекты',
+                clients: '👥 Клиенты',
+                tasks: '✓ Задачи',
+                finance: '💳 Финансы',
+                kpi: '📈 KPI',
+                team: '🤝 Команда'
+            };
+
+            let html = sections.map(section => `
+                <button class="section-link ${section === 'overview' ? 'active' : ''}" data-section="${section}" onclick="switchSection('${section}')">
+                    ${sectionLabels[section]}
+                </button>
+            `).join('');
+
+            document.getElementById('section-nav').innerHTML = html;
+        }
+
+        function switchSection(section) {
+            renderSection(section);
+        }
+
+        function renderSection(section) {
+            const workspace = workspaces[currentWorkspace];
+            const dashboard = document.getElementById('dashboard');
+            
+            // Update active section
+            document.querySelectorAll('.section-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`[data-section="${section}"]`)?.classList.add('active');
+
+            let html = '';
+
+            if (section === 'overview') {
+                html = renderOverview(workspace);
+            } else if (section === 'events') {
+                html = renderEventsSection(workspace);
+            } else if (section === 'projects') {
+                html = renderProjectsSection(workspace);
+            } else if (section === 'clients') {
+                html = renderClientsSection(workspace);
+            } else if (section === 'tasks') {
+                html = renderTasksSection(workspace);
+            } else if (section === 'finance') {
+                html = renderFinanceSection(workspace);
+            } else if (section === 'budget') {
+                html = renderBudgetSection(workspace);
+            } else if (section === 'kpi') {
+                html = renderKPISection(workspace);
+            } else if (section === 'team') {
+                html = renderTeamSection(workspace);
+            }
+
+            dashboard.innerHTML = html;
+            if (section === 'overview' || section === 'events') {
+                updateEventFormFields();
+            }
+        }
+
+        function renderOverview(workspace) {
+            let html = '';
+
+            html += '<div class="dashboard-grid">';
+
+            // Clients Card
+            html += `
+                <div class="card">
+                    <div class="card-title">
+                        <span class="card-icon">👥</span>
+                        Клиенты
+                    </div>
+                    <div class="clients-list">
+                        ${workspace.clients.slice(0, 3).map(client => `
+                            <div class="client-item">
+                                <span>${client.name}</span>
+                                <span class="client-status">${client.status === 'active' ? 'Активен' : 'На паузе'}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            // Tasks Card
+            html += `
+                <div class="card">
+                    <div class="card-title">
+                        <span class="card-icon">✓</span>
+                        Задачи
+                    </div>
+                    <div class="tasks-list">
+                        ${workspace.tasks.map((task, idx) => `
+                            <div class="task-item" onclick="toggleTask(this)">
+                                <div class="task-checkbox">
+                                    <span>✓</span>
+                                </div>
+                                <span class="task-text">${task.text}</span>
+                                <span class="task-priority priority-${task.priority}">${
+                                    task.priority === 'high' ? 'Высокий' :
+                                    task.priority === 'medium' ? 'Средний' : 'Низкий'
+                                }</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            // Budget Card
+            html += `
+                <div class="card">
+                    <div class="card-title">
+                        <span class="card-icon">💰</span>
+                        Бюджет
+                    </div>
+                    <div class="budget-item">
+                        <div class="budget-label">
+                            <span>Израсходовано</span>
+                            <span class="budget-value">${workspace.budget.spent} / ${workspace.budget.total}</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${workspace.budget.percent}%"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // KPI Metrics Card
+            html += `
+                <div class="card">
+                    <div class="card-title">
+                        <span class="card-icon">📈</span>
+                        KPI Метрики
+                    </div>
+                    <div class="metrics-grid">
+                        ${workspace.kpi.map(metric => `
+                            <div class="metric-box">
+                                <div class="metric-value">${metric.value}</div>
+                                <div class="metric-label">${metric.label}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            // Team Card (Full Width)
+            html += `
+                <div class="card full-width">
+                    <div class="card-title">
+                        <span class="card-icon">🤝</span>
+                        Команда
+                    </div>
+                    <div class="team-members">
+                        ${workspace.team.map((member, idx) => {
+                            const colors = [
+                                'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                                'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                                'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                                'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+                                'linear-gradient(135deg, #30cfd0 0%, #330867 100%)'
+                            ];
+                            return `
+                                <div class="team-member">
+                                    <div class="member-avatar" style="background: ${colors[idx % colors.length]}">
+                                        ${member.initials}
+                                    </div>
+                                    <div class="member-name">${member.name}</div>
+                                    <div class="member-role">${member.role}</div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+
+            html += '</div>';
+            return html;
+        }
+
+        function renderClientsSection(workspace) {
+            const colors = [
+                'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+                'linear-gradient(135deg, #30cfd0 0%, #330867 100%)'
+            ];
+
+            let html = '';
+
+            // Кнопка и форма добавления клиента
+            html += `<div style="margin-bottom:20px;">
+                <button onclick="toggleAddClient()" style="border:none;background:rgba(26,115,232,0.08);color:var(--primary-color);border-radius:8px;padding:10px 20px;cursor:pointer;font-size:14px;font-weight:500;">
+                    ${addingClientExpanded ? '✕ Закрыть' : '+ Добавить клиента'}
+                </button>
+            </div>`;
+
+            if (addingClientExpanded) {
+                html += `<div class="card full-width" style="margin-bottom:24px;">
+                    <div class="card-title"><span class="card-icon">➕</span>Новый клиент</div>
+                    <div class="event-form" style="max-width:600px;">
+                        <div class="form-row"><label class="form-label">Название</label><input id="nc-name" class="form-input" placeholder="Название компании" /></div>
+                        <div class="form-row"><label class="form-label">Категория</label><input id="nc-category" class="form-input" placeholder="Агентство недвижимости" /></div>
+                        <div class="form-row"><label class="form-label">Эмодзи</label><input id="nc-emoji" class="form-input" placeholder="🏢" style="max-width:80px;" /></div>
+                        <div class="form-row"><label class="form-label">Контакт</label><input id="nc-contact" class="form-input" placeholder="Иван Иванов" /></div>
+                        <div class="form-row"><label class="form-label">Должность</label><input id="nc-role" class="form-input" placeholder="Директор по маркетингу" /></div>
+                        <div class="form-row"><label class="form-label">Email</label><input id="nc-email" class="form-input" type="email" placeholder="ivan@company.ru" /></div>
+                        <div class="form-row"><label class="form-label">Телефон</label><input id="nc-phone" class="form-input" placeholder="+7 (999) 000-00-00" /></div>
+                        <div class="form-row"><label class="form-label">Бюджет</label><input id="nc-budget" class="form-input" placeholder="₽0" /></div>
+                        <div class="form-actions" style="gap:8px;">
+                            <button type="button" onclick="toggleAddClient()" style="border:1px solid var(--border-color);background:#fff;color:var(--text-light);padding:12px 18px;border-radius:10px;cursor:pointer;font-size:14px;">Отмена</button>
+                            <button type="button" class="button-primary" onclick="submitAddClient()">Добавить клиента</button>
+                        </div>
+                    </div>
+                </div>`;
+            }
+
+            html += '<div class="clients-grid">';
+
+            html += workspace.clients.map((client, idx) => {
+                const statusClass = client.status === 'active' ? 'status-active' : 
+                                   client.status === 'pause' ? 'status-pause' : 'status-completed';
+                const statusLabel = client.status === 'active' ? 'Активен' : 
+                                   client.status === 'pause' ? 'На паузе' : 'Завершён';
+
+                return `
+                    <div class="client-card">
+                        <div class="client-header">
+                            <div class="client-logo" style="background: ${colors[idx % colors.length]}; font-size: 32px;">
+                                ${client.logo}
+                            </div>
+                            <div class="client-header-info">
+                                <div class="client-name">${client.name}</div>
+                                <div class="client-category">${client.category}</div>
+                            </div>
+                            <div class="client-status-badge ${statusClass}">
+                                ${statusLabel}
+                            </div>
+                        </div>
+
+                        <div class="client-divider"></div>
+
+                        <div class="client-contact">
+                            <strong>${client.contact}</strong> • ${client.contactRole}
+                        </div>
+                        <div class="client-contact">
+                            📧 <a href="mailto:${client.email}" class="client-contact-link">${client.email}</a>
+                        </div>
+                        <div class="client-contact">
+                            📱 <a href="tel:${client.phone}" class="client-contact-link">${client.phone}</a>
+                        </div>
+
+                        <div class="client-divider"></div>
+
+                        <div class="client-projects">
+                            ${client.projects.map(project => `<span class="project-tag">${project}</span>`).join('')}
+                        </div>
+
+                        <div class="client-info-row">
+                            <span class="client-info-label">Бюджет контракта:</span>
+                            <span class="client-budget">${client.budget}</span>
+                        </div>
+
+                        <div class="client-progress">
+                            <div class="progress-label">
+                                <span>Прогресс сотрудничества</span>
+                                <span>${client.progress}%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${client.progress}%"></div>
+                            </div>
+                        </div>
+
+                        <div class="client-footer">
+                            <span>📅 Встреча: ${formatDate(client.nextMeeting)}</span>
+                            <span>💵 Потрачено: ${client.spent}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            html += '</div>';
+            return html;
+        }
+
+        function renderTasksSection(workspace) {
+            let html = '<div class="card full-width"><div class="card-title"><span class="card-icon">✓</span>Все задачи</div><div class="tasks-list">';
+            html += workspace.tasks.map((task, idx) => `
+                <div class="task-item" onclick="toggleTask(this)">
+                    <div class="task-checkbox">
+                        <span>✓</span>
+                    </div>
+                    <span class="task-text">${task.text}</span>
+                    <span class="task-priority priority-${task.priority}">${
+                        task.priority === 'high' ? 'Высокий' :
+                        task.priority === 'medium' ? 'Средний' : 'Низкий'
+                    }</span>
+                </div>
+            `).join('');
+            html += '</div></div>';
+            return html;
+        }
+
+        function renderBudgetSection(workspace) {
+            let html = '<div class="card full-width"><div class="card-title"><span class="card-icon">💰</span>Бюджет</div><div class="budget-item">';
+            html += `
+                <div class="budget-label">
+                    <span>Общий бюджет</span>
+                    <span class="budget-value">${workspace.budget.total}</span>
+                </div>
+                <div class="budget-label">
+                    <span>Израсходовано</span>
+                    <span class="budget-value">${workspace.budget.spent}</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${workspace.budget.percent}%"></div>
+                </div>
+                <div style="margin-top: 12px; text-align: center; color: var(--text-light);">
+                    ${workspace.budget.percent}% использовано
+                </div>
+            `;
+            html += '</div></div>';
+            return html;
+        }
+
+        function renderKPISection(workspace) {
+            let html = '<div class="card full-width"><div class="card-title"><span class="card-icon">📈</span>KPI Метрики</div><div class="metrics-grid">';
+            html += workspace.kpi.map(metric => `
+                <div class="metric-box">
+                    <div class="metric-value">${metric.value}</div>
+                    <div class="metric-label">${metric.label}</div>
+                </div>
+            `).join('');
+            html += '</div></div>';
+            return html;
+        }
+
+        function renderFinanceSection(workspace) {
+            const allTx = workspace.transactions || [];
+            const transactions = allTx.slice().sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+            const filteredTransactions = applyFinanceFilters(transactions);
+            const incoming = filteredTransactions.filter(tx => tx.type === 'income').reduce((sum, tx) => sum + tx.amount, 0);
+            const outgoing = filteredTransactions.filter(tx => tx.type === 'expense').reduce((sum, tx) => sum + tx.amount, 0);
+
+            const uniqueEvents = [...new Set(allTx.map(tx => tx.eventName))];
+            const uniqueClients = [...new Set(allTx.map(tx => tx.clientName))];
+            const uniqueMonths = [...new Set(allTx.map(tx => tx.dueDate.substring(0, 7)))].sort();
+
+            let html = '<div class="card full-width"><div class="card-title"><span class="card-icon">💳</span>Финансы</div>';
+            html += '<div class="finance-summary">';
+            html += `<div class="finance-summary-card"><span>Доходов по транзакциям</span><strong>€${incoming}</strong></div>`;
+            html += `<div class="finance-summary-card"><span>Выплат сотрудникам</span><strong>$${outgoing}</strong></div>`;
+            html += `<div class="finance-summary-card"><span>Транзакций после фильтра</span><strong>${filteredTransactions.length}</strong></div>`;
+            html += '</div>';
+            html += `
+                <div class="finance-filters">
+                    <select class="filter-input" onchange="setFinanceFilter('event', this.value)">
+                        <option value="">Все события</option>
+                        ${uniqueEvents.map(e => `<option value="${e}" ${financeFilters.event === e ? 'selected' : ''}>${e}</option>`).join('')}
+                    </select>
+                    <select class="filter-input" onchange="setFinanceFilter('client', this.value)">
+                        <option value="">Все клиенты</option>
+                        ${uniqueClients.map(c => `<option value="${c}" ${financeFilters.client === c ? 'selected' : ''}>${c}</option>`).join('')}
+                    </select>
+                    <select class="filter-input" onchange="setFinanceFilter('type', this.value)">
+                        <option value="">Все типы</option>
+                        <option value="income" ${financeFilters.type === 'income' ? 'selected' : ''}>Поступление</option>
+                        <option value="expense" ${financeFilters.type === 'expense' ? 'selected' : ''}>Выплата</option>
+                    </select>
+                    <select class="filter-input" onchange="setFinanceFilter('date', this.value)">
+                        <option value="">Все месяцы</option>
+                        ${uniqueMonths.map(m => {
+                            const d = new Date(m + '-01T00:00:00');
+                            const label = d.toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' });
+                            return `<option value="${m}" ${financeFilters.date === m ? 'selected' : ''}>${label}</option>`;
+                        }).join('')}
+                    </select>
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; color: var(--text-light);">
+                        <input type="checkbox" ${showCompleted ? 'checked' : ''} onchange="toggleShowCompleted(this.checked)" style="width: 16px; height: 16px; cursor: pointer;" />
+                        Показать выполненные
+                    </label>
+                </div>
+            `;
+            if (!filteredTransactions.length) {
+                html += '<div style="color: var(--text-light); padding-bottom: 8px;">Нет транзакций, подходящих под текущие фильтры.</div>';
+            } else {
+                html += `
+                    <table class="finance-table">
+                        <thead>
+                            <tr>
+                                <th>Событие</th>
+                                <th>Клиент</th>
+                                <th>Тип</th>
+                                <th>Сумма</th>
+                                <th>Доля</th>
+                                <th>Дата</th>
+                                <th>Статус</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${filteredTransactions.map(tx => {
+                                const description = tx.type === 'income'
+                                    ? `${tx.eventName} ${tx.eventDateLabel ? `(${tx.eventDateLabel})` : ''}`.trim()
+                                    : `${tx.employee || 'Зарплата'} — ${tx.eventName}`;
+                                return `
+                                    <tr>
+                                        <td>${description}</td>
+                                        <td>${tx.clientName}</td>
+                                        <td>${tx.type === 'income' ? 'Поступление' : 'Выплата'}</td>
+                                        <td>${tx.currency}${tx.amount}</td>
+                                        <td>${fractionLabel(tx.fraction)}</td>
+                                        <td>${formatDate(tx.dueDate)}</td>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span class="transaction-status ${tx.status === 'done' ? 'status-done' : 'status-pending'}">${tx.status === 'done' ? 'Выполнено' : 'Ожидает'}</span>
+                                                ${tx.status !== 'done' ? `<button onclick="markTransactionDone(${tx.txId})" style="border: none; background: rgba(30,142,62,0.1); color: var(--success-color); border-radius: 4px; padding: 3px 8px; cursor: pointer; font-size: 13px; font-weight: 600;" title="Отметить выполненным">✓</button>` : ''}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                `;
+            }
+            html += '</div>';
+            return html;
+        }
+
+        function renderEventsSection(workspace) {
+            let html = '';
+
+            html += `
+                <div class="card full-width" style="margin-bottom: 24px;">
+                    <div class="card-title"><span class="card-icon">➕</span>Добавить ивент</div>
+                    <form class="event-form" onsubmit="return addEvent(event)">
+                        <div class="form-row">
+                            <label class="form-label">Клиент</label>
+                            <select id="event-client-select" class="form-select" onchange="updateEventFormFields()">
+                                ${workspace.clients.map(c => `<option value="${c.id}">${c.name}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">Название</label>
+                            <input id="event-name" class="form-input" type="text" placeholder="Название ивента" required />
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">Дата старта</label>
+                            <input id="event-start" class="form-input" type="date" required />
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">Дата окончания</label>
+                            <input id="event-end" class="form-input" type="date" required />
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">Бюджет на маркетинг</label>
+                            <input id="event-budget" class="form-input" type="number" min="0" placeholder="0" />
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">Кол-во билетов</label>
+                            <input id="event-tickets" class="form-input" type="number" min="0" placeholder="0" oninput="updateBreakevenDisplay()" />
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">Выход в 0 (65%)</label>
+                            <input id="event-breakeven-display" class="form-input" type="text" placeholder="—" readonly style="background:#f5f5f5; color:var(--text-light);" />
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">Ссылка на билеты</label>
+                            <input id="event-ticket-link" class="form-input" type="url" placeholder="https://..." />
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">Ссылка на лендинг</label>
+                            <input id="event-landing-link" class="form-input" type="url" placeholder="https://..." />
+                        </div>
+                        <div class="form-row" id="row-ad-systems" style="display:none;">
+                            <label class="form-label">Рекламных систем</label>
+                            <input id="event-systems" class="form-input" type="number" min="1" value="1" />
+                        </div>
+                        <div class="form-actions">
+                            <button class="button-primary" type="submit">Создать ивент</button>
+                        </div>
+                    </form>
+                </div>
+            `;
+
+            if (workspace.events.length === 0) {
+                html += '<div style="color:var(--text-light); padding: 8px 0;">Нет созданных ивентов.</div>';
+            } else {
+                html += '<div class="clients-grid">';
+                workspace.events.forEach(ev => {
+                    html += editingEventId === ev.id ? renderEventEditCard(ev) : renderEventCard(ev);
+                });
+                html += '</div>';
+            }
+
+            return html;
+        }
+
+        function renderEventCard(ev) {
+            const breakeven = ev.totalTickets ? Math.round(ev.totalTickets * 0.65) : null;
+            const launchTasks = ev.launchTasks || [];
+            const done = launchTasks.filter(t => t.completed).length;
+            const total = launchTasks.length;
+            const pct = total ? Math.round((done / total) * 100) : 0;
+            const checklistOpen = expandedChecklistEventId === ev.id;
+
+            return `
+                <div class="client-card">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+                        <div>
+                            <div class="client-name">${ev.eventName}</div>
+                            <div class="client-category">${ev.clientName}</div>
+                        </div>
+                        <button onclick="startEditEvent(${ev.id})" style="border:none; background:none; cursor:pointer; font-size:18px; color:var(--text-light); padding:4px; line-height:1;" title="Редактировать">✏️</button>
+                    </div>
+                    <div class="client-divider"></div>
+                    <div class="client-info-row">
+                        <span class="client-info-label">Старт</span>
+                        <span class="client-info-value">${formatDate(ev.startDate)}</span>
+                    </div>
+                    <div class="client-info-row">
+                        <span class="client-info-label">Окончание</span>
+                        <span class="client-info-value">${formatDate(ev.endDate)}</span>
+                    </div>
+                    ${ev.marketingBudget ? `<div class="client-info-row"><span class="client-info-label">Бюджет маркетинга</span><span class="client-budget">€${ev.marketingBudget}</span></div>` : ''}
+                    ${ev.totalTickets ? `
+                    <div class="client-info-row">
+                        <span class="client-info-label">Билетов</span>
+                        <span class="client-info-value">${ev.totalTickets}</span>
+                    </div>
+                    <div class="client-info-row">
+                        <span class="client-info-label">Выход в 0</span>
+                        <span class="client-info-value" style="color:var(--warning-color);">${breakeven} шт. (65%)</span>
+                    </div>` : ''}
+                    ${ev.ticketLink || ev.landingLink ? `
+                    <div class="client-divider"></div>
+                    <div style="display:flex; gap:16px; margin-bottom:4px;">
+                        ${ev.ticketLink ? `<a href="${ev.ticketLink}" target="_blank" class="client-contact-link" style="font-size:13px;">🎫 Билеты</a>` : ''}
+                        ${ev.landingLink ? `<a href="${ev.landingLink}" target="_blank" class="client-contact-link" style="font-size:13px;">🌐 Лендинг</a>` : ''}
+                    </div>` : ''}
+                    ${total > 0 ? `
+                    <div class="client-divider"></div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--text-light); margin-bottom:2px;">
+                        <span>Прогресс запуска</span>
+                        <span style="font-weight:600; color:${pct === 100 ? 'var(--success-color)' : 'var(--primary-color)'};">${done}/${total} · ${pct}%</span>
+                    </div>
+                    <div class="launch-progress-bar"><div class="launch-progress-fill" style="width:${pct}%"></div></div>
+                    <button onclick="toggleLaunchChecklist(${ev.id})" style="border:none; background:rgba(26,115,232,0.08); color:var(--primary-color); border-radius:8px; padding:8px 0; cursor:pointer; font-size:13px; font-weight:500; width:100%; margin-bottom:4px;">
+                        ${checklistOpen ? '▲ Скрыть чек-лист' : '📋 Чек-лист запуска'}
+                    </button>
+                    ${checklistOpen ? `
+                    <div style="margin-bottom:8px;">
+                        ${launchTasks.map(task => `
+                            <div
+                                draggable="true"
+                                ondragstart="startLaunchDrag(event,${ev.id},${task.id})"
+                                ondragover="event.preventDefault()"
+                                ondrop="dropLaunchTask(event,${ev.id},${task.id})"
+                                style="display:flex; align-items:center; gap:8px; padding:7px 4px; border-bottom:1px solid var(--border-color); cursor:grab; user-select:none;"
+                            >
+                                <span style="color:#ccc;font-size:13px;cursor:grab;flex-shrink:0;">⠿</span>
+                                <div onclick="toggleLaunchTask(${ev.id}, ${task.id})" style="width:18px; height:18px; border-radius:4px; border:2px solid ${task.completed ? 'var(--success-color)' : '#ccc'}; background:${task.completed ? 'var(--success-color)' : '#fff'}; display:flex; align-items:center; justify-content:center; flex-shrink:0; cursor:pointer;">
+                                    ${task.completed ? '<span style="color:white;font-size:11px;font-weight:700;">✓</span>' : ''}
+                                </div>
+                                <span onclick="toggleLaunchTask(${ev.id}, ${task.id})" style="font-size:13px; flex:1; color:${task.completed ? 'var(--text-light)' : 'var(--text-dark)'}; text-decoration:${task.completed ? 'line-through' : 'none'}; cursor:pointer;">${task.text}</span>
+                            </div>
+                        `).join('')}
+                        <div style="display:flex; gap:8px; margin-top:10px;">
+                            <input id="new-lt-${ev.id}" class="form-input" type="text" placeholder="Добавить задачу..." style="flex:1; padding:8px 12px;" onkeydown="if(event.key==='Enter')addLaunchTask(${ev.id})" />
+                            <button onclick="addLaunchTask(${ev.id})" style="border:none;background:var(--primary-color);color:white;border-radius:8px;padding:8px 14px;cursor:pointer;font-size:16px;">+</button>
+                        </div>
+                    </div>` : ''}
+                    ` : ''}
+                    <div class="client-footer">
+                        <span></span>
+                        <button onclick="deleteEvent(${ev.id})" style="border:none; background:rgba(211,47,47,0.1); color:var(--danger-color); border-radius:6px; padding:6px 12px; cursor:pointer; font-size:12px; font-weight:600;">Удалить</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderEventEditCard(ev) {
+            return `
+                <div class="client-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                        <div class="client-name" style="color:var(--primary-color);">Редактирование</div>
+                        <button onclick="cancelEditEvent()" style="border:none; background:none; cursor:pointer; font-size:18px; color:var(--text-light); padding:4px;">✕</button>
+                    </div>
+                    <div class="event-form">
+                        <div class="form-row">
+                            <label class="form-label">Название</label>
+                            <input id="edit-name" class="form-input" value="${ev.eventName}" />
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">Дата старта</label>
+                            <input id="edit-start" class="form-input" type="date" value="${ev.startDate}" />
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">Дата окончания</label>
+                            <input id="edit-end" class="form-input" type="date" value="${ev.endDate}" />
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">Бюджет маркетинга</label>
+                            <input id="edit-budget" class="form-input" type="number" value="${ev.marketingBudget || ''}" />
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">Кол-во билетов</label>
+                            <input id="edit-tickets" class="form-input" type="number" value="${ev.totalTickets || ''}" oninput="updateEditBreakevenDisplay()" />
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">Выход в 0 (65%)</label>
+                            <input id="edit-breakeven-display" class="form-input" value="${ev.totalTickets ? Math.round(ev.totalTickets * 0.65) : '—'}" readonly style="background:#f5f5f5; color:var(--text-light);" />
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">Ссылка на билеты</label>
+                            <input id="edit-ticket-link" class="form-input" type="url" value="${ev.ticketLink || ''}" />
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label">Ссылка на лендинг</label>
+                            <input id="edit-landing-link" class="form-input" type="url" value="${ev.landingLink || ''}" />
+                        </div>
+                        <div class="form-actions" style="gap:8px;">
+                            <button type="button" onclick="cancelEditEvent()" style="border:1px solid var(--border-color); background:#fff; color:var(--text-light); padding:12px 18px; border-radius:10px; cursor:pointer; font-size:14px;">Отмена</button>
+                            <button type="button" class="button-primary" onclick="saveEventEdit(${ev.id})">Сохранить</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function startEditEvent(id) {
+            editingEventId = id;
+            expandedChecklistEventId = null;
+            renderSection('events');
+        }
+
+        function cancelEditEvent() {
+            editingEventId = null;
+            renderSection('events');
+        }
+
+        function saveEventEdit(id) {
+            const workspace = workspaces[currentWorkspace];
+            const ev = workspace.events.find(e => e.id === id);
+            if (!ev) return;
+            ev.eventName = document.getElementById('edit-name').value.trim() || ev.eventName;
+            ev.startDate = document.getElementById('edit-start').value || ev.startDate;
+            ev.endDate = document.getElementById('edit-end').value || ev.endDate;
+            ev.marketingBudget = Number(document.getElementById('edit-budget').value) || 0;
+            ev.totalTickets = Number(document.getElementById('edit-tickets').value) || 0;
+            ev.breakeven = ev.totalTickets ? Math.round(ev.totalTickets * 0.65) : 0;
+            ev.ticketLink = document.getElementById('edit-ticket-link').value.trim();
+            ev.landingLink = document.getElementById('edit-landing-link').value.trim();
+            workspace.transactions.forEach(tx => {
+                if (tx.id === id) tx.eventName = ev.eventName;
+            });
+            editingEventId = null;
+            renderSection('events');
+        }
+
+        function updateBreakevenDisplay() {
+            const tickets = Number(document.getElementById('event-tickets').value) || 0;
+            const el = document.getElementById('event-breakeven-display');
+            if (el) el.value = tickets ? Math.round(tickets * 0.65) : '—';
+        }
+
+        function updateEditBreakevenDisplay() {
+            const tickets = Number(document.getElementById('edit-tickets').value) || 0;
+            const el = document.getElementById('edit-breakeven-display');
+            if (el) el.value = tickets ? Math.round(tickets * 0.65) : '—';
+        }
+
+        function renderTeamSection(workspace) {
+            const colors = [
+                'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+                'linear-gradient(135deg, #30cfd0 0%, #330867 100%)'
+            ];
+            let html = '<div class="card full-width"><div class="card-title"><span class="card-icon">🤝</span>Команда</div><div class="team-members">';
+            html += workspace.team.map((member, idx) => `
+                <div class="team-member">
+                    <div class="member-avatar" style="background: ${colors[idx % colors.length]}">
+                        ${member.initials}
+                    </div>
+                    <div class="member-name">${member.name}</div>
+                    <div class="member-role">${member.role}</div>
+                </div>
+            `).join('');
+            html += '</div></div>';
+            return html;
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr + 'T00:00:00');
+            const options = { day: 'numeric', month: 'long' };
+            return date.toLocaleDateString('ru-RU', options);
+        }
+
+        function toggleTask(element) {
+            element.classList.toggle('completed');
+            element.querySelector('.task-checkbox').classList.toggle('checked');
+        }
+
+        function addEvent(event) {
+            event.preventDefault();
+            const workspace = workspaces[currentWorkspace];
+            if (workspace.title !== 'Noise Dealers') {
+                return false;
+            }
+
+            const clientId = Number(document.getElementById('event-client-select').value);
+            const client = workspace.clients.find(item => item.id === clientId);
+            const eventName = document.getElementById('event-name').value.trim();
+            const startDate = document.getElementById('event-start').value;
+            const endDate = document.getElementById('event-end').value;
+            const adSystems = Number(document.getElementById('event-systems').value || 1);
+            const marketingBudget = Number(document.getElementById('event-budget').value) || 0;
+            const totalTickets = Number(document.getElementById('event-tickets').value) || 0;
+            const ticketLink = document.getElementById('event-ticket-link').value.trim();
+            const landingLink = document.getElementById('event-landing-link').value.trim();
+
+            if (!client || !eventName || !startDate || !endDate) {
+                alert('Заполните клиента, название и даты старта и окончания.');
+                return false;
+            }
+
+            const start = new Date(startDate + 'T00:00:00');
+            const end = new Date(endDate + 'T00:00:00');
+            if (end < start) {
+                alert('Дата окончания должна быть позже даты старта.');
+                return false;
+            }
+            const durationDays = Math.round((end - start) / (1000 * 60 * 60 * 24)) + 1;
+
+            const baseEvent = {
+                id: workspace.events.length + 1,
+                clientId,
+                clientName: client.name,
+                eventName,
+                startDate,
+                endDate,
+                marketingBudget,
+                totalTickets,
+                breakeven: totalTickets ? Math.round(totalTickets * 0.65) : 0,
+                ticketLink,
+                landingLink,
+                createdAt: new Date().toISOString(),
+                status: 'active'
+            };
+
+            const transactions = [];
+
+            if (client.name === 'Profconcerts') {
+                const clientTotal = 250 + Math.max(0, adSystems - 1) * 150;
+                const clientPaymentDates = getClientPaymentDates(start, end);
+                const clientPaymentValue = clientPaymentDates.length ? roundQuarter(clientTotal / clientPaymentDates.length) : 0;
+
+                clientPaymentDates.forEach(date => {
+                    transactions.push({
+                        ...baseEvent,
+                        type: 'income',
+                        currency: '€',
+                        amount: clientPaymentValue,
+                        dueDate: formatDateISO(date),
+                        status: 'pending',
+                        eventDateLabel: date.getDate() === 1 ? '1-е' : '15-е'
+                    });
+                });
+
+                const profSalaryRates = [{ name: 'Даша Львова', amount: 25 }, { name: 'Алина Буйлова', amount: 50 * adSystems }];
+                transactions.push(...getSalaryTransactions(baseEvent, start, end, profSalaryRates));
+            } else {
+                // Celebrity Gala: платёж за каждый завершённый месяц, ближайшее 1-е или 15-е
+                const monthlyPayments = getCelebrityGalaPayments(start, end);
+
+                monthlyPayments.forEach(payment => {
+                    transactions.push({
+                        ...baseEvent,
+                        type: 'income',
+                        currency: '€',
+                        amount: payment.amount,
+                        fraction: 1,
+                        dueDate: formatDateISO(payment.date),
+                        status: 'pending',
+                        eventDateLabel: payment.date.getDate() === 1 ? '1-е' : '15-е'
+                    });
+                });
+
+                const celebSalaryRates = [{ name: 'Даша Львова', amount: 50 }, { name: 'Алина Буйлова', amount: 75 }];
+                transactions.push(...getSalaryTransactions(baseEvent, start, end, celebSalaryRates));
+            }
+
+            transactions.forEach(tx => { tx.txId = ++txCounter; });
+            workspace.events.push({
+                ...baseEvent,
+                adSystems,
+                launchTasks: generateLaunchTasks(startDate)
+            });
+            workspace.transactions.push(...transactions);
+            renderSection('events');
+            return false;
+        }
+
+        function getSalaryTransactions(baseEvent, start, end, rates) {
+            const txs = [];
+            let monthStart = new Date(start.getFullYear(), start.getMonth(), 1);
+            const eventEndMonth = new Date(end.getFullYear(), end.getMonth(), 1);
+
+            while (monthStart <= eventEndMonth) {
+                const daysInMonth = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 0).getDate();
+                const monthEnd = new Date(monthStart.getFullYear(), monthStart.getMonth(), daysInMonth);
+                const overlapStart = start > monthStart ? start : monthStart;
+                const overlapEnd = end < monthEnd ? end : monthEnd;
+                const daysWorked = Math.round((overlapEnd - overlapStart) / (1000 * 60 * 60 * 24)) + 1;
+
+                const roundedFraction = Math.round((daysWorked / daysInMonth) * 4) / 4;
+
+                if (roundedFraction > 0) {
+                    const payDate = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 1);
+                    rates.forEach(rate => {
+                        txs.push({
+                            ...baseEvent,
+                            type: 'expense',
+                            currency: '$',
+                            amount: roundQuarter(rate.amount * roundedFraction),
+                            fraction: roundedFraction,
+                            dueDate: formatDateISO(payDate),
+                            status: 'pending',
+                            employee: rate.name
+                        });
+                    });
+                }
+
+                monthStart = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 1);
+            }
+
+            return txs;
+        }
+
+        function getCelebrityGalaPayments(start, end) {
+            const payments = [];
+            let monthNum = 1;
+            while (true) {
+                const completionDate = new Date(start.getFullYear(), start.getMonth() + monthNum, start.getDate());
+                if (completionDate > end) break;
+                const payDate = getNearestPaymentMarker(completionDate);
+                payments.push({ date: payDate, amount: monthNum <= 2 ? 395 : 290 });
+                monthNum++;
+            }
+            return payments;
+        }
+
+        function calculateCelebrityFee(durationDays) {
+            const baseDays = 60;
+            if (durationDays <= baseDays) {
+                return 790;
+            }
+            const extraDays = durationDays - baseDays;
+            const extraFullMonths = Math.floor(extraDays / 30);
+            const extraRemain = extraDays % 30;
+            let extra = extraFullMonths * 290;
+            if (extraRemain > 0) {
+                extra += extraRemain < 15 ? 145 : 290;
+            }
+            return 790 + extra;
+        }
+
+        function getClientPaymentDates(start, end) {
+            const dates = [];
+            const firstPayment = getFirstPaymentDate(start);
+            let current = new Date(firstPayment);
+            while (current <= end) {
+                dates.push(new Date(current));
+                current = current.getDate() === 1
+                    ? new Date(current.getFullYear(), current.getMonth(), 15)
+                    : new Date(current.getFullYear(), current.getMonth() + 1, 1);
+            }
+
+            const firstThreshold = getFirstPaymentDate(start);
+            if (!dates.length && firstThreshold <= end) {
+                dates.push(new Date(firstThreshold));
+            }
+
+            if (dates.length && dates[dates.length - 1] < end) {
+                const settlement = getNearestPaymentMarker(new Date(end.getFullYear(), end.getMonth(), end.getDate() + 1));
+                if (!dates.some(d => d.getTime() === settlement.getTime())) {
+                    dates.push(settlement);
+                }
+            }
+
+            return dates;
+        }
+
+        function getSalaryDates(start, end) {
+            const dates = [];
+            let current = getFirstSalaryDate(start);
+            while (current <= end) {
+                dates.push(new Date(current));
+                current = new Date(current.getFullYear(), current.getMonth() + 1, 1);
+            }
+
+            if (dates.length && dates[dates.length - 1] < end) {
+                const settlement = getNearestPaymentMarker(new Date(end.getFullYear(), end.getMonth(), end.getDate() + 1));
+                if (!dates.some(d => d.getTime() === settlement.getTime())) {
+                    dates.push(settlement);
+                }
+            }
+
+            return dates;
+        }
+
+        function getNearestPaymentMarker(date) {
+            const month = date.getMonth();
+            const year = date.getFullYear();
+            const first = new Date(year, month, 1);
+            const fifteenth = new Date(year, month, 15);
+            if (date <= first) return first;
+            if (date <= fifteenth) return fifteenth;
+            return new Date(year, month + 1, 1);
+        }
+
+        function getFirstPaymentDate(start) {
+            const threshold = new Date(start);
+            threshold.setMonth(threshold.getMonth() + 1);
+            threshold.setHours(0, 0, 0, 0);
+            return getNearestPaymentMarker(threshold);
+        }
+
+        function getFirstSalaryDate(start) {
+            const threshold = new Date(start);
+            threshold.setMonth(threshold.getMonth() + 1);
+            threshold.setHours(0, 0, 0, 0);
+            const first = new Date(threshold.getFullYear(), threshold.getMonth(), 1);
+            return threshold <= first ? first : new Date(threshold.getFullYear(), threshold.getMonth() + 1, 1);
+        }
+
+        function roundQuarter(amount) {
+            return Math.round(amount * 4) / 4;
+        }
+
+        function fractionLabel(f) {
+            if (f === undefined || f === null) return '—';
+            if (f >= 1) return 'полный месяц';
+            if (f >= 0.75) return '3/4';
+            if (f >= 0.5) return '1/2';
+            if (f >= 0.25) return '1/4';
+            return '—';
+        }
+
+        function markTransactionDone(txId) {
+            const workspace = workspaces[currentWorkspace];
+            const tx = workspace.transactions.find(t => t.txId === txId);
+            if (tx) {
+                tx.status = 'done';
+                renderSection('finance');
+            }
+        }
+
+        function toggleShowCompleted(value) {
+            showCompleted = value;
+            renderSection('finance');
+        }
+
+        function formatDateISO(date) {
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${date.getFullYear()}-${month}-${day}`;
+        }
+
+        function deleteEvent(eventId) {
+            const workspace = workspaces[currentWorkspace];
+            workspace.events = workspace.events.filter(event => event.id !== eventId);
+            workspace.transactions = workspace.transactions.filter(tx => tx.id !== eventId);
+            renderSection('events');
+        }
+
+        function updateEventFormFields() {
+            const selectElement = document.getElementById('event-client-select');
+            const rowAdSystems = document.getElementById('row-ad-systems');
+            if (!selectElement || !rowAdSystems) return;
+
+            const clientId = Number(selectElement.value);
+            const workspace = workspaces[currentWorkspace];
+            if (!workspace) return;
+            const client = workspace.clients.find(item => item.id === clientId);
+            const showProf = client && client.name === 'Profconcerts';
+
+            rowAdSystems.style.display = showProf ? 'flex' : 'none';
+        }
+
+        let txCounter = 0;
+        let showCompleted = false;
+        let editingEventId = null;
+
+        const financeFilters = {
+            event: '',
+            client: '',
+            type: '',
+            date: ''
+        };
+
+        function setFinanceFilter(field, value) {
+            financeFilters[field] = value.toString().trim();
+            if (document.querySelector('.section-link.active')?.dataset.section === 'finance') {
+                renderSection('finance');
+            }
+        }
+
+        function applyFinanceFilters(transactions) {
+            return transactions.filter(tx => {
+                if (!showCompleted && tx.status === 'done') return false;
+                const exact = (value, filter) => !filter || value === filter;
+                const matchesMonth = !financeFilters.date || tx.dueDate.startsWith(financeFilters.date);
+                return exact(tx.eventName, financeFilters.event)
+                    && exact(tx.clientName, financeFilters.client)
+                    && exact(tx.type, financeFilters.type)
+                    && matchesMonth;
+            });
+        }
+
+        // === Launch checklist template ===
+        const LAUNCH_TASK_CONFIG = [
+            { text: 'Получить заполненный бриф от клиента',              assigneeId: 2, daysFromStart: -14, duration: 3 },
+            { text: 'Провести кик-офф с клиентом',                        assigneeId: 2, daysFromStart: -12, duration: 1 },
+            { text: 'Подготовить ТЗ на креативы',                         assigneeId: 2, daysFromStart: -10, duration: 2 },
+            { text: 'Получить креативы',                                   assigneeId: 3, daysFromStart: -7,  duration: 3 },
+            { text: 'Получить информацию о бюджете',                      assigneeId: 2, daysFromStart: -7,  duration: 2 },
+            { text: 'Получить информацию о количестве билетов',           assigneeId: 2, daysFromStart: -6,  duration: 2 },
+            { text: 'Установить пиксель / прочую аналитику',              assigneeId: 3, daysFromStart: -4,  duration: 2 },
+            { text: 'Запустить первую РК',                                 assigneeId: 3, daysFromStart: -2,  duration: 2 },
+            { text: 'Убедиться, что реклама начала откручиваться',       assigneeId: 3, daysFromStart: 1,   duration: 1 },
+            { text: 'Оповестить клиента',                                  assigneeId: 2, daysFromStart: 2,   duration: 1 },
+            { text: 'Пришло первое событие',                               assigneeId: 3, daysFromStart: 4,   duration: 1 },
+            { text: 'Подготовить новую вкладку в «отчёте» для ивента',  assigneeId: 2, daysFromStart: 7,   duration: 2 },
+            { text: 'Оповестить стейкхолдера, что всё готово',           assigneeId: 2, daysFromStart: 10,  duration: 1 }
+        ];
+
+        const PROJECT_TASK_CONFIG = [
+            { text: 'Получить бриф от клиента',          daysFromStart: -5  },
+            { text: 'Составить план работ',               daysFromStart: -3  },
+            { text: 'Утвердить план с клиентом',          daysFromStart: -1  },
+            { text: 'Начало основного этапа',             daysFromStart: 0   },
+            { text: 'Промежуточный отчёт клиенту',        daysFromStart: 14  },
+            { text: 'Финальная сдача',                    daysFromStart: 30  },
+            { text: 'Получить обратную связь',            daysFromStart: 35  }
+        ];
+
+        function generateLaunchTasks(startDateStr) {
+            const sd = new Date(startDateStr + 'T00:00:00');
+            return LAUNCH_TASK_CONFIG.map((cfg, idx) => {
+                const deadline = new Date(sd); deadline.setDate(deadline.getDate() + cfg.daysFromStart);
+                const taskStart = new Date(deadline); taskStart.setDate(taskStart.getDate() - (cfg.duration - 1));
+                const assignee = users.find(u => u.id === cfg.assigneeId);
+                return { id: idx + 1, text: cfg.text, completed: false, taskStart: formatDateISO(taskStart), deadline: formatDateISO(deadline), assigneeId: cfg.assigneeId, assigneeName: assignee ? assignee.name : null };
+            });
+        }
+
+        function generateProjectTasks(startDateStr) {
+            const sd = new Date(startDateStr + 'T00:00:00');
+            return PROJECT_TASK_CONFIG.map((cfg, idx) => {
+                const deadline = new Date(sd); deadline.setDate(deadline.getDate() + cfg.daysFromStart);
+                const taskStart = new Date(deadline); taskStart.setDate(taskStart.getDate() - 2);
+                return { id: idx + 1, text: cfg.text, completed: false, taskStart: formatDateISO(taskStart), deadline: formatDateISO(deadline), assigneeId: null, assigneeName: null };
+            });
+        }
+
+        let expandedChecklistEventId = null;
+        let calendarYear = new Date().getFullYear();
+        let calendarMonth = new Date().getMonth();
+        let launchDragId = null;
+        let launchDragEventId = null;
+        let editingUserId = null;
+        let addingClientExpanded = false;
+        let expandedProjectId = null;
+        let editingProjectId = null;
+
+        // === Auth ===
+        let users = [
+            { id: 1, email: 'sergey.datsiy@gmail.com', password: 'admin',  role: 'admin', name: 'Сергей Даций',   position: 'Руководитель',                      workspaceAccess: [0,1,2], sectionAccess: '*', visibleTaskUsers: '*' },
+            { id: 2, email: 'dasha@noisedealer.com',   password: 'dasha',  role: 'user',  name: 'Даша Львова',    position: 'Проджект Маркетинг Менеджер',       workspaceAccess: [1],    sectionAccess: '*', visibleTaskUsers: '*' },
+            { id: 3, email: 'alina@noisedealer.com',   password: 'alina',  role: 'user',  name: 'Алина Буйлова',  position: 'Перфоманс-специалист',              workspaceAccess: [1],    sectionAccess: '*', visibleTaskUsers: '*' },
+            { id: 4, email: 'masha@noisedealer.com',   password: 'masha',  role: 'user',  name: 'Маша',           position: '',                                  workspaceAccess: [1],    sectionAccess: '*', visibleTaskUsers: '*' }
+        ];
+        let userIdCounter = 4;
+        let currentUser = null;
+        let currentGlobalView = null;
+
+        function login(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value.trim().toLowerCase();
+            const password = document.getElementById('login-password').value;
+            const user = users.find(u => u.email.toLowerCase() === email && u.password === password);
+            if (user) {
+                currentUser = user;
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('user-display-name').textContent = user.name;
+                document.getElementById('user-display-role').textContent = user.role === 'admin' ? 'Администратор' : 'Пользователь';
+                document.getElementById('user-display-initials').textContent = user.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+                document.getElementById('login-error').style.display = 'none';
+            } else {
+                document.getElementById('login-error').style.display = 'block';
+            }
+            return false;
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('login-email').value = '';
+            document.getElementById('login-password').value = '';
+            document.getElementById('login-error').style.display = 'none';
+        }
+
+        // === Global views ===
+        function switchGlobalView(view) {
+            currentGlobalView = view;
+            document.querySelectorAll('.workspace-item').forEach(item => item.classList.remove('active'));
+            document.querySelector(`.workspace-item[data-view="${view}"]`)?.classList.add('active');
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+
+            const titles = { tasktracker: 'Общий таск-трекер', tasks: 'Мои задачи', employees: 'Сотрудники' };
+            document.getElementById('workspace-title').textContent = titles[view] || view;
+            document.getElementById('workspace-subtitle').textContent = '';
+            document.getElementById('section-nav').innerHTML = '';
+
+            let html = '';
+            if (view === 'tasktracker') html = renderGlobalTaskTracker();
+            else if (view === 'tasks') html = renderMyTasks();
+            else if (view === 'employees') html = renderGlobalEmployees();
+            document.getElementById('dashboard').innerHTML = html;
+        }
+
+        // Собирает все задачи из всех воркспейсов + чек-листы ивентов
+        function getAllTasksForTracker() {
+            const tasks = [];
+            workspaces.forEach((ws, wsIdx) => {
+                ws.tasks.forEach((task, taskIdx) => {
+                    tasks.push({ text: task.text, priority: task.priority || 'medium', deadline: task.deadline || null, taskStart: task.taskStart || task.deadline || null, completed: task.completed || false, source: 'ws', sourceName: ws.title, wsIdx, taskIdx, assigneeName: null });
+                });
+                (ws.events || []).forEach(ev => {
+                    (ev.launchTasks || []).forEach(lt => {
+                        tasks.push({ text: lt.text, priority: 'medium', deadline: lt.deadline || null, taskStart: lt.taskStart || lt.deadline || null, completed: lt.completed, source: 'lt', sourceName: `${ev.clientName} · ${ev.eventName}`, wsIdx, eventId: ev.id, taskId: lt.id, assigneeName: lt.assigneeName || null });
+                    });
+                });
+                (ws.projects || []).forEach(proj => {
+                    proj.tasks.forEach(pt => {
+                        tasks.push({ text: pt.text, priority: 'medium', deadline: pt.deadline || null, taskStart: pt.taskStart || pt.deadline || null, completed: pt.completed, source: 'proj', sourceName: `${proj.clientName} · ${proj.name}`, wsIdx, assigneeName: pt.assigneeName || null });
+                    });
+                });
+            });
+            return tasks;
+        }
+
+        function renderTrackerTaskItem(t) {
+            const deadlineSetter = t.source === 'ws'
+                ? `setWsTaskDeadline(${t.wsIdx},${t.taskIdx},this.value)`
+                : `setLtTaskDeadline(${t.wsIdx},${t.eventId},${t.taskId},this.value)`;
+            const pCls = t.priority === 'high' ? 'priority-high' : t.priority === 'medium' ? 'priority-medium' : 'priority-low';
+            const pLabel = t.priority === 'high' ? 'Высокий' : t.priority === 'medium' ? 'Средний' : 'Низкий';
+            const srcBg = t.source === 'lt' ? 'rgba(26,115,232,0.1)' : 'rgba(0,0,0,0.05)';
+            const srcColor = t.source === 'lt' ? 'var(--primary-color)' : 'var(--text-light)';
+            const borderColor = t.deadline ? 'var(--border-color)' : 'var(--danger-color)';
+
+            return `<div class="task-item ${t.completed ? 'completed' : ''}" style="border-left:3px solid ${borderColor}; padding-left:12px; flex-wrap:wrap; gap:6px;">
+                <div class="task-checkbox ${t.completed ? 'checked' : ''}"><span>✓</span></div>
+                <span class="task-text" style="flex:1; min-width:120px;">${t.text}</span>
+                <span style="font-size:11px;padding:2px 8px;border-radius:3px;background:${srcBg};color:${srcColor};white-space:nowrap;">${t.sourceName}</span>
+                <span class="task-priority ${pCls}">${pLabel}</span>
+                ${t.assigneeName ? `<span style="font-size:11px;padding:2px 8px;border-radius:3px;background:rgba(0,0,0,0.05);color:var(--text-light);white-space:nowrap;">👤 ${t.assigneeName}</span>` : ''}
+                ${!t.deadline ? `<span style="background:rgba(211,47,47,0.1);color:var(--danger-color);font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600;white-space:nowrap;">⚠ Нет дедлайна</span>` : `<span style="font-size:12px;color:var(--text-light);white-space:nowrap;">📅 ${formatDate(t.deadline)}</span>`}
+                <input type="date" value="${t.deadline || ''}" onchange="${deadlineSetter}" style="border:1px solid var(--border-color);border-radius:6px;padding:3px 8px;font-size:12px;color:var(--text-light);cursor:pointer;background:white;" title="Установить дедлайн" />
+            </div>`;
+        }
+
+        function setWsTaskDeadline(wsIdx, taskIdx, deadline) {
+            workspaces[wsIdx].tasks[taskIdx].deadline = deadline || null;
+            document.getElementById('dashboard').innerHTML = renderGlobalTaskTracker();
+        }
+
+        function setLtTaskDeadline(wsIdx, eventId, taskId, deadline) {
+            const ev = workspaces[wsIdx].events.find(e => e.id === eventId);
+            if (!ev) return;
+            const task = ev.launchTasks.find(t => t.id === taskId);
+            if (task) task.deadline = deadline || null;
+            document.getElementById('dashboard').innerHTML = renderGlobalTaskTracker();
+        }
+
+        const TASK_COLORS = ['#667eea','#f5576c','#4facfe','#43e97b','#fa709a','#f093fb','#764ba2','#0ba360','#3cba92','#ff6b35','#ffd700','#00bcd4'];
+
+        function buildColorMap(tasks) {
+            const map = new Map(); let i = 0;
+            tasks.forEach(t => { if (!map.has(t.sourceName)) map.set(t.sourceName, TASK_COLORS[i++ % TASK_COLORS.length]); });
+            return map;
+        }
+
+        function renderGlobalTaskTracker() {
+            const MONTH_NAMES = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+            const DAY_NAMES = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+
+            const allTasks = getAllTasksForTracker();
+            const colorMap = buildColorMap(allTasks);
+
+            const firstDay = new Date(calendarYear, calendarMonth, 1);
+            const daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
+            let startDow = firstDay.getDay(); startDow = startDow === 0 ? 6 : startDow - 1;
+
+            // Grid start = first Monday (may be in prev month)
+            const gridStart = new Date(firstDay); gridStart.setDate(gridStart.getDate() - startDow);
+            const totalWeeks = Math.ceil((startDow + daysInMonth) / 7);
+
+            const today = new Date();
+            const todayStr = formatDateISO(today);
+            const monthStartStr = `${calendarYear}-${String(calendarMonth+1).padStart(2,'0')}-01`;
+            const monthEndStr = `${calendarYear}-${String(calendarMonth+1).padStart(2,'0')}-${String(daysInMonth).padStart(2,'0')}`;
+
+            const visibleTasks = allTasks.filter(t => {
+                if (t.completed) return false;
+                const s = t.taskStart || t.deadline; const e = t.deadline;
+                return s && e && s <= monthEndStr && e >= monthStartStr;
+            });
+
+            let html = `<div class="card full-width">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                    <button onclick="prevCalMonth()" style="border:none;background:rgba(26,115,232,0.08);color:var(--primary-color);border-radius:8px;padding:8px 18px;cursor:pointer;font-size:14px;font-weight:500;">← Пред.</button>
+                    <div style="font-size:20px;font-weight:700;color:var(--text-dark);">${MONTH_NAMES[calendarMonth]} ${calendarYear}</div>
+                    <button onclick="nextCalMonth()" style="border:none;background:rgba(26,115,232,0.08);color:var(--primary-color);border-radius:8px;padding:8px 18px;cursor:pointer;font-size:14px;font-weight:500;">След. →</button>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(7,1fr);border:1px solid var(--border-color);border-bottom:none;border-radius:8px 8px 0 0;overflow:hidden;">
+                    ${DAY_NAMES.map(d => `<div style="background:var(--primary-light);padding:8px;text-align:center;font-size:12px;font-weight:600;color:var(--text-light);border-right:1px solid var(--border-color);">${d}</div>`).join('')}
+                </div>`;
+
+            for (let w = 0; w < totalWeeks; w++) {
+                const wkStart = new Date(gridStart); wkStart.setDate(wkStart.getDate() + w * 7);
+                const wkEnd = new Date(wkStart); wkEnd.setDate(wkEnd.getDate() + 6);
+                const wkStartStr = formatDateISO(wkStart);
+                const wkEndStr = formatDateISO(wkEnd);
+
+                // Day number row
+                html += `<div style="display:grid;grid-template-columns:repeat(7,1fr);border:1px solid var(--border-color);border-bottom:none;border-top:none;">`;
+                for (let d = 0; d < 7; d++) {
+                    const dt = new Date(wkStart); dt.setDate(dt.getDate() + d);
+                    const dStr = formatDateISO(dt);
+                    const inMonth = dt.getMonth() === calendarMonth;
+                    const isToday = dStr === todayStr;
+                    html += `<div style="padding:5px 8px;font-size:12px;font-weight:${isToday?'700':'400'};color:${isToday?'var(--primary-color)':inMonth?'var(--text-dark)':'#ccc'};background:${isToday?'rgba(26,115,232,0.06)':'white'};border-right:1px solid var(--border-color);border-top:1px solid var(--border-color);">${dt.getDate()}</div>`;
+                }
+                html += `</div>`;
+
+                // Tasks that overlap this week
+                const wkTasks = visibleTasks.filter(t => {
+                    const s = t.taskStart || t.deadline; return s <= wkEndStr && t.deadline >= wkStartStr;
+                });
+
+                const BAR_H = 24; const BAR_GAP = 3;
+                const areaH = wkTasks.length > 0 ? BAR_GAP + wkTasks.length * (BAR_H + BAR_GAP) : 6;
+
+                html += `<div style="position:relative;height:${areaH}px;background:white;border-left:1px solid var(--border-color);border-right:1px solid var(--border-color);">`;
+                // Vertical grid lines
+                for (let d = 1; d < 7; d++) html += `<div style="position:absolute;left:${d/7*100}%;top:0;bottom:0;border-left:1px solid #f0f0f0;"></div>`;
+
+                wkTasks.forEach((task, ri) => {
+                    const sStr = (task.taskStart || task.deadline) < wkStartStr ? wkStartStr : (task.taskStart || task.deadline);
+                    const eStr = task.deadline > wkEndStr ? wkEndStr : task.deadline;
+                    const sDiff = Math.round((new Date(sStr+'T00:00:00') - new Date(wkStartStr+'T00:00:00')) / 86400000);
+                    const eDiff = Math.round((new Date(eStr+'T00:00:00') - new Date(wkStartStr+'T00:00:00')) / 86400000);
+                    const leftPct = sDiff / 7 * 100;
+                    const widthPct = (eDiff - sDiff + 1) / 7 * 100;
+                    const color = colorMap.get(task.sourceName) || '#667eea';
+                    const fromPrev = (task.taskStart || task.deadline) < wkStartStr;
+                    const toNext = task.deadline > wkEndStr;
+                    const brL = fromPrev ? '0' : '4px'; const brR = toNext ? '0' : '4px';
+                    const top = BAR_GAP + ri * (BAR_H + BAR_GAP);
+                    const label = `${task.text}${task.assigneeName ? ' · '+task.assigneeName : ''}`;
+                    html += `<div title="${label}" style="position:absolute;left:calc(${leftPct}% + 2px);width:calc(${widthPct}% - 4px);top:${top}px;height:${BAR_H}px;background:${color}28;border-left:3px solid ${color};color:${color};border-radius:${brL} ${brR} ${brR} ${brL};padding:0 6px;font-size:11px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:4px;">${label}</div>`;
+                });
+                html += `</div>`;
+            }
+
+            // Bottom border
+            html += `<div style="height:1px;background:var(--border-color);border-radius:0 0 8px 8px;"></div>`;
+
+            // Legend
+            const legendEntries = [...colorMap.entries()].slice(0, 8);
+            if (legendEntries.length) {
+                html += `<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;">`;
+                legendEntries.forEach(([name, color]) => {
+                    html += `<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-light);"><div style="width:12px;height:12px;border-radius:3px;background:${color};flex-shrink:0;"></div>${name}</div>`;
+                });
+                html += `</div>`;
+            }
+            html += `</div>`; // card
+
+            // Task list below
+            const noDeadline = allTasks.filter(t => !t.deadline && !t.completed);
+            const withDeadline = allTasks.filter(t => t.deadline && !t.completed).sort((a,b) => a.deadline.localeCompare(b.deadline));
+            html += `<div class="card full-width" style="margin-top:20px;"><div class="card-title"><span class="card-icon">📋</span>Все задачи</div>`;
+            if (!allTasks.length) {
+                html += '<div style="color:var(--text-light);padding:8px 0;">Задач пока нет.</div>';
+            } else {
+                if (noDeadline.length) html += `<div style="margin-bottom:20px;"><div style="font-size:12px;font-weight:700;color:var(--danger-color);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">⚠ Без дедлайна (${noDeadline.length})</div><div class="tasks-list">${noDeadline.map(t => renderTrackerTaskItem(t)).join('')}</div></div>`;
+                if (withDeadline.length) html += `<div><div style="font-size:12px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">📅 По дедлайну (${withDeadline.length})</div><div class="tasks-list">${withDeadline.map(t => renderTrackerTaskItem(t)).join('')}</div></div>`;
+            }
+            html += `</div>`;
+            return html;
+        }
+
+        function prevCalMonth() {
+            if (calendarMonth === 0) { calendarMonth = 11; calendarYear--; } else calendarMonth--;
+            document.getElementById('dashboard').innerHTML = renderGlobalTaskTracker();
+        }
+
+        function nextCalMonth() {
+            if (calendarMonth === 11) { calendarMonth = 0; calendarYear++; } else calendarMonth++;
+            document.getElementById('dashboard').innerHTML = renderGlobalTaskTracker();
+        }
+
+        function renderMyTasks() {
+            // Те же данные что и трекер, но только задачи с воркспейсов/проектов текущего пользователя
+            const access = currentUser ? currentUser.workspaceAccess : [0,1,2];
+            const allTasks = getAllTasksForTracker().filter(t => access.includes(t.wsIdx));
+            const noDeadline = allTasks.filter(t => !t.deadline && !t.completed);
+            const withDeadline = allTasks.filter(t => t.deadline).sort((a, b) => a.deadline.localeCompare(b.deadline));
+
+            let html = `<div class="card full-width"><div class="card-title"><span class="card-icon">✓</span>Мои задачи</div>`;
+
+            if (!allTasks.length) {
+                html += '<div style="color:var(--text-light);padding:8px 0;">Задач пока нет.</div>';
+            } else {
+                if (noDeadline.length) {
+                    html += `<div style="margin-bottom:20px;">
+                        <div style="font-size:12px;font-weight:700;color:var(--danger-color);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">⚠ Без дедлайна (${noDeadline.length})</div>
+                        <div class="tasks-list">${noDeadline.map(t => renderTrackerTaskItem(t)).join('')}</div>
+                    </div>`;
+                }
+                if (withDeadline.length) {
+                    html += `<div>
+                        <div style="font-size:12px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">📅 По дедлайну (${withDeadline.length})</div>
+                        <div class="tasks-list">${withDeadline.map(t => renderTrackerTaskItem(t)).join('')}</div>
+                    </div>`;
+                }
+            }
+            html += '</div>';
+            return html;
+        }
+
+        function renderGlobalEmployees() {
+            const colors = ['linear-gradient(135deg, #667eea 0%, #764ba2 100%)','linear-gradient(135deg, #f093fb 0%, #f5576c 100%)','linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)','linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)','linear-gradient(135deg, #fa709a 0%, #fee140 100%)','linear-gradient(135deg, #30cfd0 0%, #330867 100%)'];
+            const ALL_SECTIONS = ['overview','events','clients','tasks','finance','budget','kpi','team'];
+            const SECTION_LABELS = { overview:'Обзор', events:'Ивенты', clients:'Клиенты', tasks:'Задачи', finance:'Финансы', budget:'Бюджет', kpi:'KPI', team:'Команда' };
+            const isAdmin = currentUser && currentUser.role === 'admin';
+
+            let html = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px;">';
+
+            users.forEach((u, idx) => {
+                const initials = u.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+                const wsNames = u.workspaceAccess.map(i => workspaces[i]?.title).filter(Boolean);
+                const isEditing = editingUserId === u.id;
+
+                if (isEditing && isAdmin) {
+                    html += `
+                        <div class="employee-card" style="grid-column: span 2;">
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                                <div style="font-size:16px;font-weight:600;color:var(--primary-color);">Редактирование: ${u.name}</div>
+                                <button onclick="cancelEditUser()" style="border:none;background:none;cursor:pointer;font-size:18px;color:var(--text-light);">✕</button>
+                            </div>
+                            <div class="event-form">
+                                <div class="form-row"><label class="form-label">Имя</label><input id="eu-name" class="form-input" value="${u.name}" /></div>
+                                <div class="form-row"><label class="form-label">Email</label><input id="eu-email" class="form-input" type="email" value="${u.email}" /></div>
+                                <div class="form-row"><label class="form-label">Пароль</label><input id="eu-password" class="form-input" type="text" value="${u.password}" /></div>
+                                <div class="form-row"><label class="form-label">Должность</label><input id="eu-position" class="form-input" value="${u.position || ''}" /></div>
+                                <div class="form-row">
+                                    <label class="form-label">Воркспейсы</label>
+                                    <div style="display:flex;gap:12px;flex-wrap:wrap;padding:4px 0;">
+                                        ${workspaces.map((ws,i) => `<label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="eu-ws-${i}" ${u.workspaceAccess.includes(i) ? 'checked' : ''} />${ws.title}</label>`).join('')}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <label class="form-label">Разделы</label>
+                                    <div style="display:flex;gap:8px;flex-wrap:wrap;padding:4px 0;">
+                                        <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="eu-sec-all" ${u.sectionAccess === '*' ? 'checked' : ''} onchange="toggleAllSections(this)" />Все разделы</label>
+                                        ${ALL_SECTIONS.map(s => `<label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" class="eu-sec-cb" id="eu-sec-${s}" ${u.sectionAccess === '*' || (Array.isArray(u.sectionAccess) && u.sectionAccess.includes(s)) ? 'checked' : ''} />${SECTION_LABELS[s]}</label>`).join('')}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <label class="form-label">Видит задачи</label>
+                                    <div style="display:flex;gap:12px;flex-wrap:wrap;padding:4px 0;">
+                                        <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="eu-vis-all" ${u.visibleTaskUsers === '*' ? 'checked' : ''} />Все</label>
+                                        ${users.filter(uu => uu.id !== u.id).map(uu => `<label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="eu-vis-${uu.id}" ${u.visibleTaskUsers === '*' || (Array.isArray(u.visibleTaskUsers) && u.visibleTaskUsers.includes(uu.id)) ? 'checked' : ''} />${uu.name}</label>`).join('')}
+                                    </div>
+                                </div>
+                                <div class="form-actions" style="gap:8px;">
+                                    <button type="button" onclick="cancelEditUser()" style="border:1px solid var(--border-color);background:#fff;color:var(--text-light);padding:12px 18px;border-radius:10px;cursor:pointer;font-size:14px;">Отмена</button>
+                                    <button type="button" class="button-primary" onclick="saveUserEdit(${u.id})">Сохранить</button>
+                                    ${u.role !== 'admin' ? `<button type="button" onclick="deleteUser(${u.id})" style="border:none;background:rgba(211,47,47,0.1);color:var(--danger-color);padding:12px 18px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;">Удалить</button>` : ''}
+                                </div>
+                            </div>
+                        </div>`;
+                } else {
+                    html += `
+                        <div class="employee-card">
+                            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+                                <div style="display:flex;align-items:center;gap:12px;">
+                                    <div style="width:48px;height:48px;border-radius:50%;background:${colors[idx % colors.length]};display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:16px;flex-shrink:0;">${initials}</div>
+                                    <div>
+                                        <div style="font-size:15px;font-weight:600;color:var(--text-dark);">${u.name}</div>
+                                        <div style="font-size:12px;color:var(--text-light);">${u.position || '—'}</div>
+                                    </div>
+                                </div>
+                                ${isAdmin ? `<button onclick="startEditUser(${u.id})" style="border:none;background:none;cursor:pointer;font-size:16px;color:var(--text-light);padding:4px;" title="Редактировать">✏️</button>` : ''}
+                            </div>
+                            <div class="client-divider"></div>
+                            <div class="client-info-row"><span class="client-info-label">Email</span><span style="font-size:13px;color:var(--text-dark);">${u.email}</span></div>
+                            <div class="client-info-row"><span class="client-info-label">Пароль</span><span style="font-size:13px;font-family:monospace;letter-spacing:1px;">${u.role === 'admin' ? '••••••' : u.password}</span></div>
+                            <div class="client-info-row"><span class="client-info-label">Роль</span><span style="font-size:13px;">${u.role === 'admin' ? 'Администратор' : 'Пользователь'}</span></div>
+                            <div style="margin-top:8px;">
+                                <div style="font-size:11px;font-weight:600;color:var(--text-light);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.4px;">Воркспейсы</div>
+                                <div>${wsNames.map(n => `<span class="ws-badge">${n}</span>`).join('') || '<span style="font-size:12px;color:var(--text-light);">нет доступа</span>'}</div>
+                            </div>
+                        </div>`;
+                }
+            });
+
+            html += '</div>';
+
+            if (isAdmin) {
+                html += `
+                    <div class="card full-width" style="margin-top:24px;">
+                        <div class="card-title"><span class="card-icon">➕</span>Добавить сотрудника</div>
+                        <div class="event-form" style="max-width:640px;">
+                            <div class="form-row"><label class="form-label">Имя</label><input id="new-user-name" class="form-input" type="text" placeholder="Иван Иванов" /></div>
+                            <div class="form-row"><label class="form-label">Email</label><input id="new-user-email" class="form-input" type="email" placeholder="user@email.com" /></div>
+                            <div class="form-row"><label class="form-label">Пароль</label><input id="new-user-password" class="form-input" type="text" placeholder="Пароль доступа" /></div>
+                            <div class="form-row"><label class="form-label">Должность</label><input id="new-user-position" class="form-input" type="text" placeholder="Специалист" /></div>
+                            <div class="form-row">
+                                <label class="form-label">Воркспейсы</label>
+                                <div style="display:flex;gap:16px;flex-wrap:wrap;padding:4px 0;">
+                                    ${workspaces.map((ws, i) => `<label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="new-user-ws-${i}" />${ws.title}</label>`).join('')}
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <label class="form-label">Разделы</label>
+                                <div style="display:flex;gap:8px;flex-wrap:wrap;padding:4px 0;">
+                                    <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="new-user-sec-all" checked />Все разделы</label>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <label class="form-label">Видит задачи</label>
+                                <div style="display:flex;gap:12px;flex-wrap:wrap;padding:4px 0;">
+                                    <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="new-user-vis-all" checked />Все</label>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button class="button-primary" onclick="addNewUser()">Создать сотрудника</button>
+                            </div>
+                        </div>
+                    </div>`;
+            }
+
+            return html;
+        }
+
+        function startEditUser(id) { editingUserId = id; document.getElementById('dashboard').innerHTML = renderGlobalEmployees(); }
+        function cancelEditUser() { editingUserId = null; document.getElementById('dashboard').innerHTML = renderGlobalEmployees(); }
+        function toggleAllSections(cb) { document.querySelectorAll('.eu-sec-cb').forEach(el => { el.checked = cb.checked; }); }
+
+        function saveUserEdit(id) {
+            const u = users.find(u => u.id === id);
+            if (!u) return;
+            u.name = document.getElementById('eu-name').value.trim() || u.name;
+            u.email = document.getElementById('eu-email').value.trim() || u.email;
+            u.password = document.getElementById('eu-password').value.trim() || u.password;
+            u.position = document.getElementById('eu-position').value.trim();
+            u.workspaceAccess = workspaces.map((_,i) => document.getElementById(`eu-ws-${i}`)?.checked ? i : -1).filter(v => v >= 0);
+            const allSec = document.getElementById('eu-sec-all')?.checked;
+            u.sectionAccess = allSec ? '*' : Array.from(document.querySelectorAll('.eu-sec-cb')).filter(el => el.checked).map(el => el.id.replace('eu-sec-',''));
+            const allVis = document.getElementById('eu-vis-all')?.checked;
+            u.visibleTaskUsers = allVis ? '*' : users.filter(uu => document.getElementById(`eu-vis-${uu.id}`)?.checked).map(uu => uu.id);
+            editingUserId = null;
+            document.getElementById('dashboard').innerHTML = renderGlobalEmployees();
+        }
+
+        function renderSettingsView() {
+            if (!currentUser || currentUser.role !== 'admin') {
+                return '<div class="card full-width"><p style="color:var(--text-light); padding:8px 0;">Доступ только для администратора.</p></div>';
+            }
+
+            let html = '<div class="card full-width"><div class="card-title"><span class="card-icon">👤</span>Управление пользователями</div>';
+            html += '<table class="finance-table" style="margin-bottom:24px;"><thead><tr><th>Имя</th><th>Email</th><th>Пароль</th><th>Роль</th><th>Воркспейсы</th><th></th></tr></thead><tbody>';
+            users.forEach(u => {
+                const wsNames = u.workspaceAccess.map(i => workspaces[i]?.title).filter(Boolean).join(', ') || '—';
+                html += `<tr>
+                    <td>${u.name}</td>
+                    <td>${u.email}</td>
+                    <td style="font-family:monospace;letter-spacing:1px;">${u.role === 'admin' ? '••••••' : u.password}</td>
+                    <td>${u.role === 'admin' ? 'Администратор' : 'Пользователь'}</td>
+                    <td>${wsNames}</td>
+                    <td>${u.role !== 'admin' ? `<button onclick="deleteUser(${u.id})" style="border:none;background:rgba(211,47,47,0.1);color:var(--danger-color);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px;font-weight:600;">Удалить</button>` : ''}</td>
+                </tr>`;
+            });
+            html += '</tbody></table>';
+            html += `
+                <div class="card-title"><span class="card-icon">➕</span>Добавить пользователя</div>
+                <div class="event-form" style="max-width:600px;">
+                    <div class="form-row"><label class="form-label">Имя</label><input id="new-user-name" class="form-input" type="text" placeholder="Иван Иванов" /></div>
+                    <div class="form-row"><label class="form-label">Email</label><input id="new-user-email" class="form-input" type="email" placeholder="user@email.com" /></div>
+                    <div class="form-row"><label class="form-label">Пароль</label><input id="new-user-password" class="form-input" type="text" placeholder="Пароль доступа" /></div>
+                    <div class="form-row">
+                        <label class="form-label">Воркспейсы</label>
+                        <div style="display:flex; gap:16px; flex-wrap:wrap; align-items:center; padding:4px 0;">
+                            ${workspaces.map((ws, idx) => `<label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="new-user-ws-${idx}" style="width:15px;height:15px;" />${ws.title}</label>`).join('')}
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="button-primary" onclick="addNewUser()">Создать пользователя</button>
+                    </div>
+                </div>
+            </div>`;
+            return html;
+        }
+
+        function addNewUser() {
+            const name = document.getElementById('new-user-name').value.trim();
+            const email = document.getElementById('new-user-email').value.trim();
+            const password = document.getElementById('new-user-password').value.trim();
+            const position = document.getElementById('new-user-position')?.value.trim() || '';
+            if (!name || !email || !password) { alert('Заполните имя, email и пароль.'); return; }
+            if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) { alert('Сотрудник с таким email уже существует.'); return; }
+            const wsAccess = workspaces.map((_,i) => document.getElementById(`new-user-ws-${i}`)?.checked ? i : -1).filter(v => v >= 0);
+            users.push({ id: ++userIdCounter, email, password, role: 'user', name, position, workspaceAccess: wsAccess, sectionAccess: '*', visibleTaskUsers: '*' });
+            document.getElementById('dashboard').innerHTML = renderGlobalEmployees();
+        }
+
+        function deleteUser(id) {
+            if (!confirm('Удалить сотрудника?')) return;
+            users = users.filter(u => u.id !== id);
+            editingUserId = null;
+            document.getElementById('dashboard').innerHTML = renderGlobalEmployees();
+        }
+
+        // === Launch checklist ===
+        function toggleLaunchTask(eventId, taskId) {
+            const workspace = workspaces[currentWorkspace];
+            const ev = workspace.events.find(e => e.id === eventId);
+            if (!ev || !ev.launchTasks) return;
+            const task = ev.launchTasks.find(t => t.id === taskId);
+            if (task) { task.completed = !task.completed; renderSection('events'); }
+        }
+
+        function toggleLaunchChecklist(eventId) {
+            editingEventId = null;
+            expandedChecklistEventId = expandedChecklistEventId === eventId ? null : eventId;
+            renderSection('events');
+        }
+
+        function addLaunchTask(eventId) {
+            const input = document.getElementById(`new-lt-${eventId}`);
+            if (!input || !input.value.trim()) return;
+            const workspace = workspaces[currentWorkspace];
+            const ev = workspace.events.find(e => e.id === eventId);
+            if (!ev) return;
+            const maxId = ev.launchTasks.length ? Math.max(...ev.launchTasks.map(t => t.id)) : 0;
+            ev.launchTasks.push({ id: maxId + 1, text: input.value.trim(), completed: false, custom: true });
+            renderSection('events');
+        }
+
+        function startLaunchDrag(e, eventId, taskId) {
+            launchDragId = taskId;
+            launchDragEventId = eventId;
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function dropLaunchTask(e, eventId, targetId) {
+            e.preventDefault();
+            if (launchDragId === targetId || launchDragEventId !== eventId) return;
+            const workspace = workspaces[currentWorkspace];
+            const ev = workspace.events.find(e => e.id === eventId);
+            if (!ev) return;
+            const from = ev.launchTasks.findIndex(t => t.id === launchDragId);
+            const to = ev.launchTasks.findIndex(t => t.id === targetId);
+            const [item] = ev.launchTasks.splice(from, 1);
+            ev.launchTasks.splice(to, 0, item);
+            launchDragId = null;
+            renderSection('events');
+        }
+
+        // === Клиенты — добавление ===
+        function toggleAddClient() {
+            addingClientExpanded = !addingClientExpanded;
+            renderSection('clients');
+        }
+
+        function submitAddClient() {
+            const name = document.getElementById('nc-name')?.value.trim();
+            if (!name) { alert('Введите название клиента.'); return; }
+            const workspace = workspaces[currentWorkspace];
+            workspace.clients.push({
+                id: workspace.clients.length + 1,
+                name,
+                category: document.getElementById('nc-category')?.value.trim() || '',
+                status: 'active',
+                contact: document.getElementById('nc-contact')?.value.trim() || '',
+                contactRole: document.getElementById('nc-role')?.value.trim() || '',
+                email: document.getElementById('nc-email')?.value.trim() || '',
+                phone: document.getElementById('nc-phone')?.value.trim() || '',
+                budget: document.getElementById('nc-budget')?.value.trim() || '₽0',
+                spent: '₽0',
+                progress: 0,
+                projects: [],
+                nextMeeting: '',
+                logo: document.getElementById('nc-emoji')?.value.trim() || '🏢'
+            });
+            addingClientExpanded = false;
+            renderSection('clients');
+        }
+
+        // === Проекты (Ignite + Прочее) ===
+        function renderProjectsSection(workspace) {
+            if (!workspace.projects) workspace.projects = [];
+            const wsIdx = workspaces.indexOf(workspace);
+
+            let html = `<div class="card full-width" style="margin-bottom:24px;">
+                <div class="card-title"><span class="card-icon">➕</span>Добавить проект</div>
+                <form class="event-form" style="max-width:600px;" onsubmit="return submitAddProject(${wsIdx}, event)">
+                    <div class="form-row"><label class="form-label">Название</label><input id="np-name" class="form-input" placeholder="Название проекта" required /></div>
+                    <div class="form-row"><label class="form-label">Клиент</label>
+                        <select id="np-client" class="form-select">
+                            ${workspace.clients.map(c => `<option value="${c.id}">${c.name}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-row"><label class="form-label">Дата старта</label><input id="np-start" class="form-input" type="date" required /></div>
+                    <div class="form-row"><label class="form-label">Дата окончания</label><input id="np-end" class="form-input" type="date" required /></div>
+                    <div class="form-row"><label class="form-label">Описание</label><input id="np-desc" class="form-input" placeholder="Краткое описание" /></div>
+                    <div class="form-actions"><button class="button-primary" type="submit">Создать проект</button></div>
+                </form>
+            </div>`;
+
+            if (!workspace.projects.length) {
+                html += '<div style="color:var(--text-light);padding:8px 0;">Нет созданных проектов.</div>';
+            } else {
+                html += '<div class="clients-grid">';
+                workspace.projects.forEach(proj => {
+                    html += editingProjectId === proj.id ? renderProjectEditCard(proj, wsIdx) : renderProjectCard(proj, wsIdx);
+                });
+                html += '</div>';
+            }
+            return html;
+        }
+
+        function submitAddProject(wsIdx, e) {
+            e.preventDefault();
+            const workspace = workspaces[wsIdx];
+            if (!workspace.projects) workspace.projects = [];
+            const name = document.getElementById('np-name').value.trim();
+            const startDate = document.getElementById('np-start').value;
+            const endDate = document.getElementById('np-end').value;
+            const clientId = Number(document.getElementById('np-client').value);
+            const client = workspace.clients.find(c => c.id === clientId);
+            workspace.projects.push({
+                id: workspace.projects.length + 1,
+                name,
+                clientId,
+                clientName: client?.name || '',
+                startDate,
+                endDate,
+                description: document.getElementById('np-desc').value.trim(),
+                status: 'active',
+                tasks: generateProjectTasks(startDate)
+            });
+            renderSection('projects');
+            return false;
+        }
+
+        function renderProjectCard(proj, wsIdx) {
+            const done = proj.tasks.filter(t => t.completed).length;
+            const total = proj.tasks.length;
+            const pct = total ? Math.round((done / total) * 100) : 0;
+            const isOpen = expandedProjectId === proj.id;
+            return `
+                <div class="client-card">
+                    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+                        <div>
+                            <div class="client-name">${proj.name}</div>
+                            <div class="client-category">${proj.clientName}</div>
+                        </div>
+                        <button onclick="startEditProject(${proj.id})" style="border:none;background:none;cursor:pointer;font-size:18px;color:var(--text-light);padding:4px;" title="Редактировать">✏️</button>
+                    </div>
+                    <div class="client-divider"></div>
+                    <div class="client-info-row"><span class="client-info-label">Старт</span><span class="client-info-value">${formatDate(proj.startDate)}</span></div>
+                    <div class="client-info-row"><span class="client-info-label">Окончание</span><span class="client-info-value">${formatDate(proj.endDate)}</span></div>
+                    ${proj.description ? `<div style="font-size:12px;color:var(--text-light);margin:8px 0;">${proj.description}</div>` : ''}
+                    <div class="client-divider"></div>
+                    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-light);margin-bottom:4px;">
+                        <span>Задачи</span>
+                        <span style="font-weight:600;color:${pct===100?'var(--success-color)':'var(--primary-color)'};">${done}/${total} · ${pct}%</span>
+                    </div>
+                    <div class="launch-progress-bar"><div class="launch-progress-fill" style="width:${pct}%"></div></div>
+                    <button onclick="toggleProjectTasks(${proj.id})" style="border:none;background:rgba(26,115,232,0.08);color:var(--primary-color);border-radius:8px;padding:8px 0;cursor:pointer;font-size:13px;font-weight:500;width:100%;margin-bottom:4px;">
+                        ${isOpen ? '▲ Скрыть задачи' : '📋 Задачи проекта'}
+                    </button>
+                    ${isOpen ? renderProjectTaskList(proj, wsIdx) : ''}
+                    <div class="client-footer">
+                        <span></span>
+                        <button onclick="deleteProject(${wsIdx},${proj.id})" style="border:none;background:rgba(211,47,47,0.1);color:var(--danger-color);border-radius:6px;padding:6px 12px;cursor:pointer;font-size:12px;font-weight:600;">Удалить</button>
+                    </div>
+                </div>`;
+        }
+
+        function renderProjectTaskList(proj, wsIdx) {
+            const usersOptions = users.map(u => `<option value="${u.id}">${u.name}</option>`).join('');
+            let html = '<div style="margin-bottom:8px;">';
+            proj.tasks.forEach(task => {
+                html += `<div style="display:flex;align-items:center;gap:8px;padding:7px 4px;border-bottom:1px solid var(--border-color);">
+                    <div onclick="toggleProjectTask(${wsIdx},${proj.id},${task.id})" style="width:18px;height:18px;border-radius:4px;border:2px solid ${task.completed?'var(--success-color)':'#ccc'};background:${task.completed?'var(--success-color)':'#fff'};display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;">
+                        ${task.completed?'<span style="color:white;font-size:11px;font-weight:700;">✓</span>':''}
+                    </div>
+                    <span style="flex:1;font-size:13px;color:${task.completed?'var(--text-light)':'var(--text-dark)'};text-decoration:${task.completed?'line-through':'none'};">${task.text}</span>
+                    <select onchange="setProjectTaskAssignee(${wsIdx},${proj.id},${task.id},this.value)" style="border:1px solid var(--border-color);border-radius:6px;padding:3px 6px;font-size:11px;color:var(--text-light);">
+                        <option value="">👤 —</option>${usersOptions.replace(`value="${task.assigneeId}"`,`value="${task.assigneeId}" selected`)}
+                    </select>
+                    <input type="date" value="${task.deadline||''}" onchange="setProjectTaskDeadline(${wsIdx},${proj.id},${task.id},this.value)" style="border:1px solid var(--border-color);border-radius:6px;padding:3px 6px;font-size:11px;color:var(--text-light);" />
+                </div>`;
+            });
+            html += `<div style="display:flex;gap:8px;margin-top:8px;">
+                <input id="np-task-${proj.id}" class="form-input" type="text" placeholder="Добавить задачу..." style="flex:1;padding:8px 12px;" onkeydown="if(event.key==='Enter')addProjectTask(${wsIdx},${proj.id})" />
+                <button onclick="addProjectTask(${wsIdx},${proj.id})" style="border:none;background:var(--primary-color);color:white;border-radius:8px;padding:8px 14px;cursor:pointer;font-size:16px;">+</button>
+            </div></div>`;
+            return html;
+        }
+
+        function renderProjectEditCard(proj, wsIdx) {
+            return `<div class="client-card">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                    <div class="client-name" style="color:var(--primary-color);">Редактирование</div>
+                    <button onclick="cancelEditProject()" style="border:none;background:none;cursor:pointer;font-size:18px;color:var(--text-light);">✕</button>
+                </div>
+                <div class="event-form">
+                    <div class="form-row"><label class="form-label">Название</label><input id="ep-name" class="form-input" value="${proj.name}" /></div>
+                    <div class="form-row"><label class="form-label">Дата старта</label><input id="ep-start" class="form-input" type="date" value="${proj.startDate}" /></div>
+                    <div class="form-row"><label class="form-label">Дата окончания</label><input id="ep-end" class="form-input" type="date" value="${proj.endDate}" /></div>
+                    <div class="form-row"><label class="form-label">Описание</label><input id="ep-desc" class="form-input" value="${proj.description||''}" /></div>
+                    <div class="form-actions" style="gap:8px;">
+                        <button type="button" onclick="cancelEditProject()" style="border:1px solid var(--border-color);background:#fff;color:var(--text-light);padding:12px 18px;border-radius:10px;cursor:pointer;font-size:14px;">Отмена</button>
+                        <button type="button" class="button-primary" onclick="saveProjectEdit(${wsIdx},${proj.id})">Сохранить</button>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function startEditProject(id) { editingProjectId = id; expandedProjectId = null; renderSection('projects'); }
+        function cancelEditProject() { editingProjectId = null; renderSection('projects'); }
+        function toggleProjectTasks(id) { editingProjectId = null; expandedProjectId = expandedProjectId === id ? null : id; renderSection('projects'); }
+
+        function saveProjectEdit(wsIdx, id) {
+            const proj = workspaces[wsIdx].projects.find(p => p.id === id);
+            if (!proj) return;
+            proj.name = document.getElementById('ep-name').value.trim() || proj.name;
+            proj.startDate = document.getElementById('ep-start').value || proj.startDate;
+            proj.endDate = document.getElementById('ep-end').value || proj.endDate;
+            proj.description = document.getElementById('ep-desc').value.trim();
+            editingProjectId = null;
+            renderSection('projects');
+        }
+
+        function toggleProjectTask(wsIdx, projId, taskId) {
+            const proj = workspaces[wsIdx].projects?.find(p => p.id === projId);
+            const task = proj?.tasks.find(t => t.id === taskId);
+            if (task) { task.completed = !task.completed; renderSection('projects'); }
+        }
+
+        function setProjectTaskAssignee(wsIdx, projId, taskId, userId) {
+            const proj = workspaces[wsIdx].projects?.find(p => p.id === projId);
+            const task = proj?.tasks.find(t => t.id === taskId);
+            if (task) { task.assigneeId = userId ? Number(userId) : null; task.assigneeName = users.find(u => u.id === task.assigneeId)?.name || null; }
+        }
+
+        function setProjectTaskDeadline(wsIdx, projId, taskId, deadline) {
+            const proj = workspaces[wsIdx].projects?.find(p => p.id === projId);
+            const task = proj?.tasks.find(t => t.id === taskId);
+            if (task) { task.deadline = deadline || null; }
+        }
+
+        function addProjectTask(wsIdx, projId) {
+            const input = document.getElementById(`np-task-${projId}`);
+            if (!input?.value.trim()) return;
+            const proj = workspaces[wsIdx].projects?.find(p => p.id === projId);
+            if (!proj) return;
+            const maxId = proj.tasks.length ? Math.max(...proj.tasks.map(t => t.id)) : 0;
+            proj.tasks.push({ id: maxId + 1, text: input.value.trim(), completed: false, deadline: null, assigneeId: null, assigneeName: null });
+            renderSection('projects');
+        }
+
+        function deleteProject(wsIdx, id) {
+            if (!confirm('Удалить проект?')) return;
+            workspaces[wsIdx].projects = workspaces[wsIdx].projects.filter(p => p.id !== id);
+            renderSection('projects');
+        }
+
+        // === Пример данных ===
+        function populateExampleData() {
+            const nd = workspaces[1]; // Noise Dealers
+            if (nd.events.length === 0) {
+                nd.events.push({
+                    id: 1, clientId: 1, clientName: 'Profconcerts', eventName: 'Summer Beats Festival',
+                    startDate: '2026-06-01', endDate: '2026-07-20', marketingBudget: 5000,
+                    totalTickets: 2000, breakeven: 1300, ticketLink: '', landingLink: '',
+                    adSystems: 2, createdAt: new Date().toISOString(), status: 'active',
+                    launchTasks: generateLaunchTasks('2026-06-01')
+                });
+                nd.events.push({
+                    id: 2, clientId: 2, clientName: 'Celebrity Gala', eventName: 'VIP Celebrity Night 2026',
+                    startDate: '2026-07-15', endDate: '2026-10-15', marketingBudget: 12000,
+                    totalTickets: 500, breakeven: 325, ticketLink: '', landingLink: '',
+                    adSystems: 1, createdAt: new Date().toISOString(), status: 'active',
+                    launchTasks: generateLaunchTasks('2026-07-15')
+                });
+            }
+
+            const ignite = workspaces[0];
+            if (!ignite.projects) ignite.projects = [];
+            if (ignite.projects.length === 0) {
+                ignite.projects.push({
+                    id: 1, name: 'SEO-продвижение Q3 2026', clientId: 1, clientName: 'Апартаменты Люкс',
+                    startDate: '2026-06-01', endDate: '2026-08-31', description: 'Комплексное SEO + контент',
+                    status: 'active', tasks: generateProjectTasks('2026-06-01')
+                });
+                ignite.projects.push({
+                    id: 2, name: 'Летняя рекламная кампания', clientId: 2, clientName: 'Riches Properties',
+                    startDate: '2026-05-20', endDate: '2026-07-15', description: 'Контекст + таргет',
+                    status: 'active', tasks: generateProjectTasks('2026-05-20')
+                });
+            }
+        }
+
+        // getAllTasksForTracker определена выше — включает ws, events, projects
+
+        let currentWorkspace = 0;
+
+        // Initialize
+        function init() {
+            populateExampleData();
+
+            // Render workspace tabs
+            let tabs = '';
+            workspaces.forEach((ws, idx) => {
+                tabs += `
+                    <button class="tab ${idx === 0 ? 'active' : ''}" onclick="switchWorkspace(${idx}, this)">
+                        ${ws.emoji} ${ws.title}
+                    </button>
+                `;
+            });
+            document.getElementById('workspace-tabs').innerHTML = tabs;
+
+            // Render initial section nav and dashboard
+            document.getElementById('workspace-title').textContent = workspaces[0].title;
+            document.getElementById('workspace-subtitle').textContent = workspaces[0].subtitle;
+
+            renderSectionNav();
+            renderSection('overview');
+            updateEventFormFields();
+        }
+
+        init();
+    </script>
+</body>
+</html>
