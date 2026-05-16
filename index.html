@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agency OS - Панель управления</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * {
             margin: 0;
@@ -920,201 +921,36 @@
                 title: 'Ignite Digital Agency',
                 emoji: '🏢',
                 subtitle: 'Real estate marketing',
-                clients: [
-                    {
-                        id: 1,
-                        name: 'Апартаменты Люкс',
-                        category: 'Жилой комплекс',
-                        status: 'active',
-                        contact: 'Иван Морозов',
-                        contactRole: 'Генеральный директор',
-                        email: 'ivan@luxapart.ru',
-                        phone: '+7 (999) 111-22-33',
-                        budget: '₽450,000',
-                        spent: '₽315,000',
-                        progress: 70,
-                        projects: ['Сайт', 'SEO', 'Реклама', 'Дизайн'],
-                        nextMeeting: '2026-05-18',
-                        logo: '🏢'
-                    },
-                    {
-                        id: 2,
-                        name: 'Riches Properties',
-                        category: 'Агентство недвижимости',
-                        status: 'active',
-                        contact: 'Мария Кольцова',
-                        contactRole: 'Менеджер по маркетингу',
-                        email: 'maria@riches.com',
-                        phone: '+7 (999) 333-44-55',
-                        budget: '₽320,000',
-                        spent: '₽224,000',
-                        progress: 70,
-                        projects: ['Реклама', 'SMM', 'Email'],
-                        nextMeeting: '2026-05-20',
-                        logo: '🏛️'
-                    },
-                    {
-                        id: 3,
-                        name: 'Prime Housing',
-                        category: 'Девелопер',
-                        status: 'active',
-                        contact: 'Сергей Волков',
-                        contactRole: 'Директор проектов',
-                        email: 'sergey@prime.ru',
-                        phone: '+7 (999) 555-66-77',
-                        budget: '₽280,000',
-                        spent: '₽112,000',
-                        progress: 40,
-                        projects: ['Контент', 'Видео', 'Аналитика'],
-                        nextMeeting: '2026-05-19',
-                        logo: '🏗️'
-                    }
-                ],
-                tasks: [
-                    { text: 'Создать рекламную кампанию', priority: 'high' },
-                    { text: 'Обновить портфолио объектов', priority: 'high' },
-                    { text: 'Провести встречу с клиентом', priority: 'medium' },
-                    { text: 'Подготовить аналитику продаж', priority: 'low' }
-                ],
-                budget: {
-                    total: '₽250,000',
-                    spent: '₽167,500',
-                    percent: 67
-                },
-                kpi: [
-                    { label: 'ROI', value: '+320%' },
-                    { label: 'Лиды', value: '147' },
-                    { label: 'Конверсия', value: '18.5%' },
-                    { label: 'Бюджет', value: '67% ✓' }
-                ],
-                team: [
-                    { name: 'Иван Сидоров', role: 'SEO специалист', initials: 'ИС' },
-                    { name: 'Мария Кузнецова', role: 'Копирайтер', initials: 'МК' },
-                    { name: 'Петр Васильев', role: 'Дизайнер', initials: 'ПВ' }
-                ]
+                clients: [],
+                tasks: [],
+                budget: { total: '₽0', spent: '₽0', percent: 0 },
+                kpi: [],
+                team: [],
+                projects: []
             },
             {
                 title: 'Noise Dealers',
                 emoji: '🎵',
                 subtitle: 'Event marketing',
-                clients: [
-                    {
-                        id: 1,
-                        name: 'Profconcerts',
-                        category: 'Продвижение мероприятий',
-                        status: 'active',
-                        contact: 'Алина Буйлова',
-                        contactRole: 'Client Success',
-                        email: 'alina@profconcerts.ru',
-                        phone: '+7 (999) 888-77-66',
-                        budget: '€0',
-                        spent: '€0',
-                        progress: 30,
-                        projects: ['Запуск рекламы', 'Оптимизация', 'Отчётность'],
-                        nextMeeting: '2026-05-25',
-                        logo: '🎵'
-                    },
-                    {
-                        id: 2,
-                        name: 'Celebrity Gala',
-                        category: 'Ивент-сервис премиум',
-                        status: 'active',
-                        contact: 'Даша Львова',
-                        contactRole: 'Руководитель проекта',
-                        email: 'dasha@celebritygala.com',
-                        phone: '+7 (999) 222-11-00',
-                        budget: '€0',
-                        spent: '€0',
-                        progress: 20,
-                        projects: ['Подготовка пакета', 'Медиаплан', 'Отчёты'],
-                        nextMeeting: '2026-05-26',
-                        logo: '🎬'
-                    }
-                ],
-                tasks: [
-                    { text: 'Согласовать билеты', priority: 'high' },
-                    { text: 'Подготовить пресс-релиз', priority: 'high' },
-                    { text: 'Связаться с влиятельными лицами', priority: 'medium' },
-                    { text: 'Обновить расписание событий', priority: 'low' }
-                ],
-                budget: {
-                    total: '₽180,000',
-                    spent: '₽108,000',
-                    percent: 60
-                },
-                kpi: [
-                    { label: 'ROI', value: '+245%' },
-                    { label: 'Посещаемость', value: '8.5K' },
-                    { label: 'Виральность', value: '4.2M' },
-                    { label: 'Бюджет', value: '60% ✓' }
-                ],
-                team: [
-                    { name: 'Даша Львова', role: 'Проджект Маркетинг Менеджер', initials: 'ДЛ' },
-                    { name: 'Алина Буйлова', role: 'Перфоманс-специалист', initials: 'АБ' },
-                    { name: 'Анна Морозова', role: 'Event менеджер', initials: 'АМ' }
-                ],
+                clients: [],
+                tasks: [],
+                budget: { total: '€0', spent: '€0', percent: 0 },
+                kpi: [],
+                team: [],
                 events: [],
-                transactions: []
+                transactions: [],
+                projects: []
             },
             {
                 title: 'Прочее',
                 emoji: '📋',
                 subtitle: 'Различные проекты',
-                clients: [
-                    {
-                        id: 1,
-                        name: 'Startup Hub',
-                        category: 'Стартап-инкубатор',
-                        status: 'active',
-                        contact: 'Артём Цветов',
-                        contactRole: 'Основатель',
-                        email: 'artem@startuphub.ru',
-                        phone: '+7 (999) 123-45-67',
-                        budget: '₽300,000',
-                        spent: '₽225,000',
-                        progress: 75,
-                        projects: ['Брендинг', 'Сайт', 'SMM', 'Фото'],
-                        nextMeeting: '2026-05-23',
-                        logo: '🚀'
-                    },
-                    {
-                        id: 2,
-                        name: 'Digital Academy',
-                        category: 'Онлайн-школа',
-                        status: 'active',
-                        contact: 'Елена Борисова',
-                        contactRole: 'Директор',
-                        email: 'elena@digilearn.ru',
-                        phone: '+7 (999) 234-56-78',
-                        budget: '₽250,000',
-                        spent: '₽150,000',
-                        progress: 60,
-                        projects: ['LMS', 'Курсы', 'Email', 'Вебинары'],
-                        nextMeeting: '2026-05-24',
-                        logo: '📚'
-                    }
-                ],
-                tasks: [
-                    { text: 'Внутренние встречи коллектива', priority: 'low' },
-                    { text: 'Обновить внутренние процессы', priority: 'medium' },
-                    { text: 'Проверить документацию', priority: 'low' }
-                ],
-                budget: {
-                    total: '₽100,000',
-                    spent: '₽45,000',
-                    percent: 45
-                },
-                kpi: [
-                    { label: 'Проекты', value: '12' },
-                    { label: 'Команда', value: '24' },
-                    { label: 'Качество', value: '94%' },
-                    { label: 'Бюджет', value: '45% ✓' }
-                ],
-                team: [
-                    { name: 'Олег Смирнов', role: 'Project Manager', initials: 'ОС' },
-                    { name: 'Елена Ефимова', role: 'Аналитик', initials: 'ЕЕ' },
-                    { name: 'Сергей Львов', role: 'Системный администратор', initials: 'СЛ' }
-                ]
+                clients: [],
+                tasks: [],
+                budget: { total: '₽0', spent: '₽0', percent: 0 },
+                kpi: [],
+                team: [],
+                projects: []
             }
         ];
 
@@ -1429,21 +1265,106 @@
         }
 
         function renderTasksSection(workspace) {
-            let html = '<div class="card full-width"><div class="card-title"><span class="card-icon">✓</span>Все задачи</div><div class="tasks-list">';
-            html += workspace.tasks.map((task, idx) => `
-                <div class="task-item" onclick="toggleTask(this)">
-                    <div class="task-checkbox">
-                        <span>✓</span>
+            const wsIdx = workspaces.indexOf(workspace);
+            const allWsTasks = [];
+
+            workspace.tasks.forEach((task, taskIdx) => {
+                allWsTasks.push({ ...task, _source: 'ws', _wsIdx: wsIdx, _taskIdx: taskIdx, _sourceName: workspace.title });
+            });
+            (workspace.events || []).forEach(ev => {
+                (ev.launchTasks || []).forEach(lt => {
+                    allWsTasks.push({ ...lt, _source: 'lt', _wsIdx: wsIdx, _eventId: ev.id, _taskId: lt.id, _sourceName: `Ивент: ${ev.eventName}` });
+                });
+            });
+            (workspace.projects || []).forEach(proj => {
+                proj.tasks.forEach(pt => {
+                    allWsTasks.push({ ...pt, _source: 'proj', _wsIdx: wsIdx, _projId: proj.id, _taskId: pt.id, _sourceName: `Проект: ${proj.name}` });
+                });
+            });
+
+            const wsTeam = users.filter(u => u.workspaceAccess.includes(wsIdx));
+            const assigneeOpts = wsTeam.map(u => `<option value="${u.id}">${u.name}</option>`).join('');
+
+            let html = `
+                <div class="card full-width" style="margin-bottom:16px;">
+                    <div class="card-title"><span class="card-icon">➕</span>Добавить задачу</div>
+                    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+                        <input id="new-ws-task-text" class="form-input" placeholder="Текст задачи" style="flex:2;min-width:200px;" onkeydown="if(event.key==='Enter')addWorkspaceTask(${wsIdx})" />
+                        <select id="new-ws-task-priority" class="form-select" style="flex:1;min-width:120px;">
+                            <option value="high">Высокий</option>
+                            <option value="medium" selected>Средний</option>
+                            <option value="low">Низкий</option>
+                        </select>
+                        <select id="new-ws-task-assignee" class="form-select" style="flex:1;min-width:120px;">
+                            <option value="">Ответственный</option>${assigneeOpts}
+                        </select>
+                        <button onclick="addWorkspaceTask(${wsIdx})" class="button-primary" style="white-space:nowrap;">Добавить</button>
                     </div>
-                    <span class="task-text">${task.text}</span>
-                    <span class="task-priority priority-${task.priority}">${
-                        task.priority === 'high' ? 'Высокий' :
-                        task.priority === 'medium' ? 'Средний' : 'Низкий'
-                    }</span>
                 </div>
-            `).join('');
-            html += '</div></div>';
+            `;
+
+            html += `<div class="card full-width"><div class="card-title"><span class="card-icon">✓</span>Все задачи воркспейса (${allWsTasks.length})</div>`;
+            if (!allWsTasks.length) {
+                html += '<div style="color:var(--text-light);padding:8px 0;">Задач пока нет.</div>';
+            } else {
+                html += '<div class="tasks-list">';
+                allWsTasks.forEach((task, i) => {
+                    const pCls = task.priority === 'high' ? 'priority-high' : task.priority === 'medium' ? 'priority-medium' : 'priority-low';
+                    const pLabel = task.priority === 'high' ? 'Высокий' : task.priority === 'medium' ? 'Средний' : 'Низкий';
+                    html += `<div class="task-item ${task.completed ? 'completed' : ''}">
+                        <div class="task-checkbox ${task.completed ? 'checked' : ''}" onclick="toggleWsTask(${wsIdx},'${task._source}',${task._taskIdx ?? task._taskId},${task._eventId ?? 'null'},${task._projId ?? 'null'},this)"><span>✓</span></div>
+                        <span class="task-text">${task.text}</span>
+                        <span style="font-size:11px;padding:2px 8px;border-radius:3px;background:rgba(0,0,0,0.05);color:var(--text-light);white-space:nowrap;">${task._sourceName}</span>
+                        ${task.assigneeName ? `<span style="font-size:11px;color:var(--text-light);">👤 ${task.assigneeName}</span>` : ''}
+                        <span class="task-priority ${pCls}">${pLabel}</span>
+                        <button onclick="deleteWsTask(${wsIdx},'${task._source}',${task._taskIdx ?? task._taskId},${task._eventId ?? 'null'},${task._projId ?? 'null'})" style="border:none;background:none;cursor:pointer;color:#ccc;font-size:14px;padding:2px 4px;" title="Удалить">✕</button>
+                    </div>`;
+                });
+                html += '</div>';
+            }
+            html += '</div>';
             return html;
+        }
+
+        async function addWorkspaceTask(wsIdx) {
+            const text = document.getElementById('new-ws-task-text')?.value.trim();
+            if (!text) return;
+            const priority = document.getElementById('new-ws-task-priority')?.value || 'medium';
+            const assigneeId = Number(document.getElementById('new-ws-task-assignee')?.value) || null;
+            const assignee = assigneeId ? users.find(u => u.id === assigneeId) : null;
+            const workspace = workspaces[wsIdx];
+            const task = { text, priority, completed: false, deadline: null, taskStart: null, assigneeId, assigneeName: assignee?.name || null };
+            workspace.tasks.push(task);
+            await sbSaveTask(task, workspace.title);
+            renderSection('tasks');
+        }
+
+        async function toggleWsTask(wsIdx, source, idx, eventId, projId, el) {
+            let task = null;
+            if (source === 'ws') task = workspaces[wsIdx].tasks[idx];
+            else if (source === 'lt') task = workspaces[wsIdx].events?.find(e => e.id === eventId)?.launchTasks?.find(t => t.id === idx);
+            else if (source === 'proj') task = workspaces[wsIdx].projects?.find(p => p.id === projId)?.tasks?.find(t => t.id === idx);
+            if (!task) return;
+            task.completed = !task.completed;
+            el.closest('.task-item').classList.toggle('completed', task.completed);
+            el.classList.toggle('checked', task.completed);
+            if (source === 'ws') await sbSaveTask(task, workspaces[wsIdx].title);
+        }
+
+        async function deleteWsTask(wsIdx, source, idx, eventId, projId) {
+            if (!confirm('Вы уверены, что хотите удалить задачу?')) return;
+            if (source === 'ws') {
+                const task = workspaces[wsIdx].tasks[idx];
+                await sbDeleteTask(task?.supabase_id);
+                workspaces[wsIdx].tasks.splice(idx, 1);
+            } else if (source === 'lt') {
+                const ev = workspaces[wsIdx].events?.find(e => e.id === eventId);
+                if (ev) ev.launchTasks = ev.launchTasks.filter(t => t.id !== idx);
+            } else if (source === 'proj') {
+                const proj = workspaces[wsIdx].projects?.find(p => p.id === projId);
+                if (proj) { proj.tasks = proj.tasks.filter(t => t.id !== idx); await sbSaveProject(proj, workspaces[wsIdx].title); }
+            }
+            renderSection('tasks');
         }
 
         function renderBudgetSection(workspace) {
@@ -1469,15 +1390,46 @@
         }
 
         function renderKPISection(workspace) {
-            let html = '<div class="card full-width"><div class="card-title"><span class="card-icon">📈</span>KPI Метрики</div><div class="metrics-grid">';
-            html += workspace.kpi.map(metric => `
-                <div class="metric-box">
-                    <div class="metric-value">${metric.value}</div>
-                    <div class="metric-label">${metric.label}</div>
+            const wsIdx = workspaces.indexOf(workspace);
+            let html = `
+                <div class="card full-width" style="margin-bottom:16px;">
+                    <div class="card-title"><span class="card-icon">➕</span>Добавить KPI</div>
+                    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+                        <input id="kpi-label" class="form-input" placeholder="Название (ROI, Лиды...)" style="flex:2;min-width:160px;" />
+                        <input id="kpi-value" class="form-input" placeholder="Значение (+320%, 147...)" style="flex:1;min-width:120px;" />
+                        <button onclick="addKPI(${wsIdx})" class="button-primary">Добавить</button>
+                    </div>
                 </div>
-            `).join('');
-            html += '</div></div>';
+            `;
+            if (!workspace.kpi.length) {
+                html += '<div style="color:var(--text-light);padding:8px 0;">Нет KPI. Добавьте первый показатель.</div>';
+            } else {
+                html += '<div class="card full-width"><div class="card-title"><span class="card-icon">📈</span>KPI Метрики</div><div class="metrics-grid">';
+                workspace.kpi.forEach((metric, kpiIdx) => {
+                    html += `
+                        <div class="metric-box" style="position:relative;">
+                            <div class="metric-value">${metric.value}</div>
+                            <div class="metric-label">${metric.label}</div>
+                            <button onclick="deleteKPI(${wsIdx},${kpiIdx})" style="position:absolute;top:6px;right:6px;border:none;background:none;cursor:pointer;color:#ccc;font-size:13px;" title="Удалить">✕</button>
+                        </div>`;
+                });
+                html += '</div></div>';
+            }
             return html;
+        }
+
+        function addKPI(wsIdx) {
+            const label = document.getElementById('kpi-label')?.value.trim();
+            const value = document.getElementById('kpi-value')?.value.trim();
+            if (!label || !value) { alert('Заполните название и значение KPI.'); return; }
+            workspaces[wsIdx].kpi.push({ label, value });
+            renderSection('kpi');
+        }
+
+        function deleteKPI(wsIdx, kpiIdx) {
+            if (!confirm('Вы уверены, что хотите удалить этот KPI?')) return;
+            workspaces[wsIdx].kpi.splice(kpiIdx, 1);
+            renderSection('kpi');
         }
 
         function renderFinanceSection(workspace) {
@@ -1651,6 +1603,13 @@
             const pct = total ? Math.round((done / total) * 100) : 0;
             const checklistOpen = expandedChecklistEventId === ev.id;
 
+            const eventTxs = (workspaces[currentWorkspace].transactions || []).filter(tx => tx.id === ev.id);
+            const totalIncome = eventTxs.filter(tx => tx.type === 'income').reduce((s, tx) => s + tx.amount, 0);
+            const totalExpense = eventTxs.filter(tx => tx.type === 'expense').reduce((s, tx) => s + tx.amount, 0);
+            const marginAbs = totalIncome - totalExpense;
+            const marginPct = totalIncome > 0 ? Math.round((marginAbs / totalIncome) * 100) : null;
+            const marginColor = marginPct === null ? 'var(--text-light)' : marginPct >= 60 ? 'var(--success-color)' : marginPct >= 35 ? 'var(--warning-color)' : 'var(--danger-color)';
+
             return `
                 <div class="client-card">
                     <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
@@ -1678,6 +1637,11 @@
                     <div class="client-info-row">
                         <span class="client-info-label">Выход в 0</span>
                         <span class="client-info-value" style="color:var(--warning-color);">${breakeven} шт. (65%)</span>
+                    </div>` : ''}
+                    ${marginPct !== null ? `
+                    <div class="client-info-row">
+                        <span class="client-info-label">Маржинальность</span>
+                        <span class="client-info-value" style="color:${marginColor}; font-size:14px;">${marginPct}% <span style="font-size:11px; font-weight:400; color:var(--text-light);">(€${totalIncome} − $${totalExpense})</span></span>
                     </div>` : ''}
                     ${ev.ticketLink || ev.landingLink ? `
                     <div class="client-divider"></div>
@@ -1818,25 +1782,25 @@
         }
 
         function renderTeamSection(workspace) {
-            const colors = [
-                'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-                'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-                'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-                'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-                'linear-gradient(135deg, #30cfd0 0%, #330867 100%)'
-            ];
-            let html = '<div class="card full-width"><div class="card-title"><span class="card-icon">🤝</span>Команда</div><div class="team-members">';
-            html += workspace.team.map((member, idx) => `
-                <div class="team-member">
-                    <div class="member-avatar" style="background: ${colors[idx % colors.length]}">
-                        ${member.initials}
-                    </div>
-                    <div class="member-name">${member.name}</div>
-                    <div class="member-role">${member.role}</div>
-                </div>
-            `).join('');
-            html += '</div></div>';
+            const colors = ['linear-gradient(135deg, #667eea 0%, #764ba2 100%)','linear-gradient(135deg, #f093fb 0%, #f5576c 100%)','linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)','linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)','linear-gradient(135deg, #fa709a 0%, #fee140 100%)','linear-gradient(135deg, #30cfd0 0%, #330867 100%)'];
+            const wsIdx = workspaces.indexOf(workspace);
+            const teamMembers = users.filter(u => u.workspaceAccess.includes(wsIdx));
+            let html = '<div class="card full-width"><div class="card-title"><span class="card-icon">🤝</span>Команда</div>';
+            if (!teamMembers.length) {
+                html += '<div style="color:var(--text-light);padding:8px 0;">В воркспейсе нет сотрудников. Добавьте их через раздел «Сотрудники» и выдайте доступ к этому воркспейсу.</div>';
+            } else {
+                html += '<div class="team-members">';
+                teamMembers.forEach((u, idx) => {
+                    const initials = u.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+                    html += `<div class="team-member">
+                        <div class="member-avatar" style="background:${colors[idx % colors.length]}">${initials}</div>
+                        <div class="member-name">${u.name}</div>
+                        <div class="member-role">${u.position || '—'}</div>
+                    </div>`;
+                });
+                html += '</div>';
+            }
+            html += '</div>';
             return html;
         }
 
@@ -2118,6 +2082,7 @@
         }
 
         function deleteEvent(eventId) {
+            if (!confirm('Вы уверены, что хотите удалить ивент?')) return;
             const workspace = workspaces[currentWorkspace];
             workspace.events = workspace.events.filter(event => event.id !== eventId);
             workspace.transactions = workspace.transactions.filter(tx => tx.id !== eventId);
@@ -2221,6 +2186,7 @@
         let launchDragEventId = null;
         let editingUserId = null;
         let addingClientExpanded = false;
+        let addingEmployeeExpanded = false;
         let expandedProjectId = null;
         let editingProjectId = null;
 
@@ -2319,6 +2285,7 @@
                 ${t.assigneeName ? `<span style="font-size:11px;padding:2px 8px;border-radius:3px;background:rgba(0,0,0,0.05);color:var(--text-light);white-space:nowrap;">👤 ${t.assigneeName}</span>` : ''}
                 ${!t.deadline ? `<span style="background:rgba(211,47,47,0.1);color:var(--danger-color);font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600;white-space:nowrap;">⚠ Нет дедлайна</span>` : `<span style="font-size:12px;color:var(--text-light);white-space:nowrap;">📅 ${formatDate(t.deadline)}</span>`}
                 <input type="date" value="${t.deadline || ''}" onchange="${deadlineSetter}" style="border:1px solid var(--border-color);border-radius:6px;padding:3px 8px;font-size:12px;color:var(--text-light);cursor:pointer;background:white;" title="Установить дедлайн" />
+                <button onclick="deleteTrackerTask('${t.source}',${t.wsIdx},${t.taskIdx ?? t.taskId},${t.eventId ?? 'null'},${t.projId ?? 'null'})" style="border:none;background:none;cursor:pointer;color:var(--danger-color);font-size:14px;flex-shrink:0;" title="Удалить">✕</button>
             </div>`;
         }
 
@@ -2465,41 +2432,144 @@
         }
 
         function renderMyTasks() {
-            // Те же данные что и трекер, но только задачи с воркспейсов/проектов текущего пользователя
+            const isAdmin = currentUser?.role === 'admin';
             const access = currentUser ? currentUser.workspaceAccess : [0,1,2];
-            const allTasks = getAllTasksForTracker().filter(t => access.includes(t.wsIdx));
-            const noDeadline = allTasks.filter(t => !t.deadline && !t.completed);
-            const withDeadline = allTasks.filter(t => t.deadline).sort((a, b) => a.deadline.localeCompare(b.deadline));
+            let allTasks = getAllTasksForTracker().filter(t => access.includes(t.wsIdx) && !t.completed);
 
-            let html = `<div class="card full-width"><div class="card-title"><span class="card-icon">✓</span>Мои задачи</div>`;
+            // Не-админы видят только свои задачи
+            if (!isAdmin && currentUser) {
+                allTasks = allTasks.filter(t => !t.assigneeId || t.assigneeId === currentUser.id);
+            }
+
+            // Задачи без ответственного или без дедлайна — наверх
+            const needsAttention = allTasks.filter(t => !t.assigneeId || !t.deadline);
+            const ready = allTasks.filter(t => t.assigneeId && t.deadline).sort((a, b) => a.deadline.localeCompare(b.deadline));
+
+            const allUserOpts = users.map(u => `<option value="${u.id}">${u.name}</option>`).join('');
+
+            let html = `<div class="card full-width"><div class="card-title"><span class="card-icon">✓</span>Мои задачи${isAdmin ? ' (все)' : ''}</div>`;
 
             if (!allTasks.length) {
                 html += '<div style="color:var(--text-light);padding:8px 0;">Задач пока нет.</div>';
             } else {
-                if (noDeadline.length) {
-                    html += `<div style="margin-bottom:20px;">
-                        <div style="font-size:12px;font-weight:700;color:var(--danger-color);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">⚠ Без дедлайна (${noDeadline.length})</div>
-                        <div class="tasks-list">${noDeadline.map(t => renderTrackerTaskItem(t)).join('')}</div>
-                    </div>`;
+                if (needsAttention.length) {
+                    html += `<div style="margin-bottom:24px;">
+                        <div style="font-size:12px;font-weight:700;color:var(--danger-color);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">⚠ Требуют внимания — нет ответственного или дедлайна (${needsAttention.length})</div>
+                        <div class="tasks-list">`;
+                    needsAttention.forEach(t => {
+                        const deadlineSetter = t.source === 'ws' ? `setWsTaskDeadline(${t.wsIdx},${t.taskIdx},this.value)` : t.source === 'lt' ? `setLtTaskDeadline(${t.wsIdx},${t.eventId},${t.taskId},this.value)` : '';
+                        html += `<div class="task-item" style="border-left:3px solid var(--danger-color);padding-left:12px;flex-wrap:wrap;gap:6px;">
+                            <div class="task-checkbox"><span>✓</span></div>
+                            <span class="task-text" style="flex:1;min-width:120px;">${t.text}</span>
+                            ${!t.assigneeId ? `<select onchange="setTrackerTaskAssignee('${t.source}',${t.wsIdx},${t.taskIdx ?? t.taskId},${t.eventId ?? 'null'},this.value)" style="border:1px solid var(--border-color);border-radius:6px;padding:3px 8px;font-size:12px;color:var(--text-light);">
+                                <option value="">👤 Назначить</option>${allUserOpts}
+                            </select>` : `<span style="font-size:12px;color:var(--text-light);">👤 ${t.assigneeName}</span>`}
+                            ${!t.deadline ? `<input type="date" onchange="${deadlineSetter}" style="border:1px solid var(--border-color);border-radius:6px;padding:3px 8px;font-size:12px;" title="Установить дедлайн" />` : `<span style="font-size:12px;color:var(--text-light);">📅 ${formatDate(t.deadline)}</span>`}
+                            <span style="font-size:11px;padding:2px 8px;border-radius:3px;background:rgba(0,0,0,0.05);color:var(--text-light);">${t.sourceName}</span>
+                            <button onclick="deleteTrackerTask('${t.source}',${t.wsIdx},${t.taskIdx ?? t.taskId},${t.eventId ?? 'null'},${t.projId ?? 'null'})" style="border:none;background:none;cursor:pointer;color:var(--danger-color);font-size:14px;" title="Удалить">✕</button>
+                        </div>`;
+                    });
+                    html += '</div></div>';
                 }
-                if (withDeadline.length) {
-                    html += `<div>
-                        <div style="font-size:12px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">📅 По дедлайну (${withDeadline.length})</div>
-                        <div class="tasks-list">${withDeadline.map(t => renderTrackerTaskItem(t)).join('')}</div>
-                    </div>`;
+                if (ready.length) {
+                    html += `<div><div style="font-size:12px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">📅 По дедлайну (${ready.length})</div><div class="tasks-list">`;
+                    ready.forEach(t => {
+                        html += renderTrackerTaskItemWithActions(t);
+                    });
+                    html += '</div></div>';
                 }
             }
             html += '</div>';
             return html;
         }
 
+        function renderTrackerTaskItemWithActions(t) {
+            const pCls = t.priority === 'high' ? 'priority-high' : t.priority === 'medium' ? 'priority-medium' : 'priority-low';
+            const pLabel = t.priority === 'high' ? 'Высокий' : t.priority === 'medium' ? 'Средний' : 'Низкий';
+            const srcBg = t.source === 'lt' ? 'rgba(26,115,232,0.1)' : 'rgba(0,0,0,0.05)';
+            const srcColor = t.source === 'lt' ? 'var(--primary-color)' : 'var(--text-light)';
+            return `<div class="task-item" style="flex-wrap:wrap;gap:6px;">
+                <div class="task-checkbox ${t.completed ? 'checked' : ''}"><span>✓</span></div>
+                <span class="task-text" style="flex:1;min-width:120px;">${t.text}</span>
+                <span style="font-size:11px;padding:2px 8px;border-radius:3px;background:${srcBg};color:${srcColor};white-space:nowrap;">${t.sourceName}</span>
+                ${t.assigneeName ? `<span style="font-size:11px;color:var(--text-light);">👤 ${t.assigneeName}</span>` : ''}
+                <span style="font-size:12px;color:var(--text-light);">📅 ${formatDate(t.deadline)}</span>
+                <span class="task-priority ${pCls}">${pLabel}</span>
+                <button onclick="deleteTrackerTask('${t.source}',${t.wsIdx},${t.taskIdx ?? t.taskId},${t.eventId ?? 'null'},${t.projId ?? 'null'})" style="border:none;background:none;cursor:pointer;color:var(--danger-color);font-size:14px;" title="Удалить">✕</button>
+            </div>`;
+        }
+
+        function setTrackerTaskAssignee(source, wsIdx, taskId, eventId, userId) {
+            const user = users.find(u => u.id === Number(userId));
+            let task = null;
+            if (source === 'ws') task = workspaces[wsIdx].tasks[taskId];
+            else if (source === 'lt') task = workspaces[wsIdx].events?.find(e => e.id === eventId)?.launchTasks?.find(t => t.id === taskId);
+            if (task) { task.assigneeId = user?.id || null; task.assigneeName = user?.name || null; }
+            document.getElementById('dashboard').innerHTML = renderMyTasks();
+        }
+
+        function deleteTrackerTask(source, wsIdx, idx, eventId, projId) {
+            if (!confirm('Вы уверены, что хотите удалить задачу?')) return;
+            if (source === 'ws') {
+                const task = workspaces[wsIdx].tasks[idx];
+                sbDeleteTask(task?.supabase_id);
+                workspaces[wsIdx].tasks.splice(idx, 1);
+            } else if (source === 'lt') {
+                const ev = workspaces[wsIdx].events?.find(e => e.id === eventId);
+                if (ev) ev.launchTasks = ev.launchTasks.filter(t => t.id !== idx);
+            } else if (source === 'proj') {
+                const proj = workspaces[wsIdx].projects?.find(p => p.id === projId);
+                if (proj) { proj.tasks = proj.tasks.filter(t => t.id !== idx); sbSaveProject(proj, workspaces[wsIdx].title); }
+            }
+            if (currentGlobalView === 'tasks') document.getElementById('dashboard').innerHTML = renderMyTasks();
+            else if (currentGlobalView === 'tasktracker') document.getElementById('dashboard').innerHTML = renderGlobalTaskTracker();
+        }
+
         function renderGlobalEmployees() {
             const colors = ['linear-gradient(135deg, #667eea 0%, #764ba2 100%)','linear-gradient(135deg, #f093fb 0%, #f5576c 100%)','linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)','linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)','linear-gradient(135deg, #fa709a 0%, #fee140 100%)','linear-gradient(135deg, #30cfd0 0%, #330867 100%)'];
-            const ALL_SECTIONS = ['overview','events','clients','tasks','finance','budget','kpi','team'];
-            const SECTION_LABELS = { overview:'Обзор', events:'Ивенты', clients:'Клиенты', tasks:'Задачи', finance:'Финансы', budget:'Бюджет', kpi:'KPI', team:'Команда' };
+            const ALL_SECTIONS = ['overview','events','projects','clients','tasks','finance','kpi','team'];
+            const SECTION_LABELS = { overview:'Обзор', events:'Ивенты', projects:'Проекты', clients:'Клиенты', tasks:'Задачи', finance:'Финансы', kpi:'KPI', team:'Команда' };
             const isAdmin = currentUser && currentUser.role === 'admin';
 
-            let html = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px;">';
+            // Кнопка добавить сотрудника
+            let html = '';
+            if (isAdmin) {
+                html += `<div style="margin-bottom:20px;">
+                    <button onclick="toggleAddEmployee()" style="border:none;background:var(--primary-color);color:white;border-radius:8px;padding:10px 20px;cursor:pointer;font-size:14px;font-weight:500;">
+                        + Добавить сотрудника
+                    </button>
+                </div>`;
+                if (typeof addingEmployeeExpanded !== 'undefined' && addingEmployeeExpanded) {
+                    html += `<div class="card full-width" style="margin-bottom:24px;">
+                        <div class="card-title"><span class="card-icon">➕</span>Новый сотрудник</div>
+                        <div class="event-form" style="max-width:640px;">
+                            <div class="form-row"><label class="form-label">Имя</label><input id="new-user-name" class="form-input" type="text" placeholder="Иван Иванов" /></div>
+                            <div class="form-row"><label class="form-label">Email</label><input id="new-user-email" class="form-input" type="email" placeholder="user@email.com" /></div>
+                            <div class="form-row"><label class="form-label">Пароль</label><input id="new-user-password" class="form-input" type="text" placeholder="Пароль доступа" /></div>
+                            <div class="form-row"><label class="form-label">Должность</label><input id="new-user-position" class="form-input" type="text" placeholder="Специалист" /></div>
+                            <div class="form-row">
+                                <label class="form-label">Воркспейсы</label>
+                                <div style="display:flex;gap:16px;flex-wrap:wrap;padding:4px 0;">
+                                    ${workspaces.map((ws, i) => `<label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="new-user-ws-${i}" />${ws.title}</label>`).join('')}
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <label class="form-label">Разделы воркспейса</label>
+                                <div style="display:flex;gap:8px;flex-wrap:wrap;padding:4px 0;">
+                                    <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="new-user-sec-all" checked onchange="document.querySelectorAll('.new-sec-cb').forEach(el=>el.checked=this.checked)" />Все разделы</label>
+                                    ${ALL_SECTIONS.map(s => `<label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" class="new-sec-cb" id="new-user-sec-${s}" checked />${SECTION_LABELS[s]}</label>`).join('')}
+                                </div>
+                            </div>
+                            <div class="form-actions" style="gap:8px;">
+                                <button type="button" onclick="toggleAddEmployee()" style="border:1px solid var(--border-color);background:#fff;color:var(--text-light);padding:12px 18px;border-radius:10px;cursor:pointer;font-size:14px;">Отмена</button>
+                                <button class="button-primary" onclick="addNewUser()">Создать сотрудника</button>
+                            </div>
+                        </div>
+                    </div>`;
+                }
+            }
+
+            html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px;">';
 
             users.forEach((u, idx) => {
                 const initials = u.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
@@ -2529,13 +2599,6 @@
                                     <div style="display:flex;gap:8px;flex-wrap:wrap;padding:4px 0;">
                                         <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="eu-sec-all" ${u.sectionAccess === '*' ? 'checked' : ''} onchange="toggleAllSections(this)" />Все разделы</label>
                                         ${ALL_SECTIONS.map(s => `<label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" class="eu-sec-cb" id="eu-sec-${s}" ${u.sectionAccess === '*' || (Array.isArray(u.sectionAccess) && u.sectionAccess.includes(s)) ? 'checked' : ''} />${SECTION_LABELS[s]}</label>`).join('')}
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <label class="form-label">Видит задачи</label>
-                                    <div style="display:flex;gap:12px;flex-wrap:wrap;padding:4px 0;">
-                                        <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="eu-vis-all" ${u.visibleTaskUsers === '*' ? 'checked' : ''} />Все</label>
-                                        ${users.filter(uu => uu.id !== u.id).map(uu => `<label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="eu-vis-${uu.id}" ${u.visibleTaskUsers === '*' || (Array.isArray(u.visibleTaskUsers) && u.visibleTaskUsers.includes(uu.id)) ? 'checked' : ''} />${uu.name}</label>`).join('')}
                                     </div>
                                 </div>
                                 <div class="form-actions" style="gap:8px;">
@@ -2572,44 +2635,11 @@
 
             html += '</div>';
 
-            if (isAdmin) {
-                html += `
-                    <div class="card full-width" style="margin-top:24px;">
-                        <div class="card-title"><span class="card-icon">➕</span>Добавить сотрудника</div>
-                        <div class="event-form" style="max-width:640px;">
-                            <div class="form-row"><label class="form-label">Имя</label><input id="new-user-name" class="form-input" type="text" placeholder="Иван Иванов" /></div>
-                            <div class="form-row"><label class="form-label">Email</label><input id="new-user-email" class="form-input" type="email" placeholder="user@email.com" /></div>
-                            <div class="form-row"><label class="form-label">Пароль</label><input id="new-user-password" class="form-input" type="text" placeholder="Пароль доступа" /></div>
-                            <div class="form-row"><label class="form-label">Должность</label><input id="new-user-position" class="form-input" type="text" placeholder="Специалист" /></div>
-                            <div class="form-row">
-                                <label class="form-label">Воркспейсы</label>
-                                <div style="display:flex;gap:16px;flex-wrap:wrap;padding:4px 0;">
-                                    ${workspaces.map((ws, i) => `<label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="new-user-ws-${i}" />${ws.title}</label>`).join('')}
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <label class="form-label">Разделы</label>
-                                <div style="display:flex;gap:8px;flex-wrap:wrap;padding:4px 0;">
-                                    <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="new-user-sec-all" checked />Все разделы</label>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <label class="form-label">Видит задачи</label>
-                                <div style="display:flex;gap:12px;flex-wrap:wrap;padding:4px 0;">
-                                    <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="new-user-vis-all" checked />Все</label>
-                                </div>
-                            </div>
-                            <div class="form-actions">
-                                <button class="button-primary" onclick="addNewUser()">Создать сотрудника</button>
-                            </div>
-                        </div>
-                    </div>`;
-            }
-
             return html;
         }
 
-        function startEditUser(id) { editingUserId = id; document.getElementById('dashboard').innerHTML = renderGlobalEmployees(); }
+        function toggleAddEmployee() { addingEmployeeExpanded = !addingEmployeeExpanded; document.getElementById('dashboard').innerHTML = renderGlobalEmployees(); }
+        function startEditUser(id) { editingUserId = id; addingEmployeeExpanded = false; document.getElementById('dashboard').innerHTML = renderGlobalEmployees(); }
         function cancelEditUser() { editingUserId = null; document.getElementById('dashboard').innerHTML = renderGlobalEmployees(); }
         function toggleAllSections(cb) { document.querySelectorAll('.eu-sec-cb').forEach(el => { el.checked = cb.checked; }); }
 
@@ -2681,7 +2711,7 @@
         }
 
         function deleteUser(id) {
-            if (!confirm('Удалить сотрудника?')) return;
+            if (!confirm('Вы уверены, что хотите удалить сотрудника?')) return;
             users = users.filter(u => u.id !== id);
             editingUserId = null;
             document.getElementById('dashboard').innerHTML = renderGlobalEmployees();
@@ -2739,11 +2769,11 @@
             renderSection('clients');
         }
 
-        function submitAddClient() {
+        async function submitAddClient() {
             const name = document.getElementById('nc-name')?.value.trim();
             if (!name) { alert('Введите название клиента.'); return; }
             const workspace = workspaces[currentWorkspace];
-            workspace.clients.push({
+            const client = {
                 id: workspace.clients.length + 1,
                 name,
                 category: document.getElementById('nc-category')?.value.trim() || '',
@@ -2758,7 +2788,9 @@
                 projects: [],
                 nextMeeting: '',
                 logo: document.getElementById('nc-emoji')?.value.trim() || '🏢'
-            });
+            };
+            workspace.clients.push(client);
+            await sbSaveClient(client, workspace.title);
             addingClientExpanded = false;
             renderSection('clients');
         }
@@ -2780,6 +2812,16 @@
                     <div class="form-row"><label class="form-label">Дата старта</label><input id="np-start" class="form-input" type="date" required /></div>
                     <div class="form-row"><label class="form-label">Дата окончания</label><input id="np-end" class="form-input" type="date" required /></div>
                     <div class="form-row"><label class="form-label">Описание</label><input id="np-desc" class="form-input" placeholder="Краткое описание" /></div>
+                    <div class="form-row">
+                        <label class="form-label">Сотрудники</label>
+                        <div style="display:flex;gap:12px;flex-wrap:wrap;padding:4px 0;">
+                            ${users.filter(u => u.workspaceAccess.includes(wsIdx)).map(u => `
+                                <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;">
+                                    <input type="checkbox" id="np-assignee-${u.id}" />
+                                    ${u.name}
+                                </label>`).join('') || '<span style="font-size:13px;color:var(--text-light);">Нет сотрудников с доступом к воркспейсу</span>'}
+                        </div>
+                    </div>
                     <div class="form-actions"><button class="button-primary" type="submit">Создать проект</button></div>
                 </form>
             </div>`;
@@ -2796,26 +2838,39 @@
             return html;
         }
 
-        function submitAddProject(wsIdx, e) {
+        async function submitAddProject(wsIdx, e) {
             e.preventDefault();
             const workspace = workspaces[wsIdx];
             if (!workspace.projects) workspace.projects = [];
             const name = document.getElementById('np-name').value.trim();
             const startDate = document.getElementById('np-start').value;
             const endDate = document.getElementById('np-end').value;
-            const clientId = Number(document.getElementById('np-client').value);
+            const clientId = Number(document.getElementById('np-client')?.value) || null;
             const client = workspace.clients.find(c => c.id === clientId);
-            workspace.projects.push({
+            // Собираем выбранных сотрудников
+            const assignees = users.filter(u => u.workspaceAccess.includes(wsIdx))
+                .filter(u => document.getElementById(`np-assignee-${u.id}`)?.checked)
+                .map(u => ({ id: u.id, name: u.name }));
+            // Генерируем задачи с ответственными (назначаем первого если есть)
+            const tasks = generateProjectTasks(startDate).map((t, i) => ({
+                ...t,
+                assigneeId: assignees[i % Math.max(assignees.length, 1)]?.id || null,
+                assigneeName: assignees[i % Math.max(assignees.length, 1)]?.name || null
+            }));
+            const proj = {
                 id: workspace.projects.length + 1,
                 name,
                 clientId,
                 clientName: client?.name || '',
                 startDate,
                 endDate,
-                description: document.getElementById('np-desc').value.trim(),
+                description: document.getElementById('np-desc')?.value.trim() || '',
                 status: 'active',
-                tasks: generateProjectTasks(startDate)
-            });
+                assignees,
+                tasks
+            };
+            workspace.projects.push(proj);
+            await sbSaveProject(proj, workspace.title);
             renderSection('projects');
             return false;
         }
@@ -2900,93 +2955,264 @@
         function cancelEditProject() { editingProjectId = null; renderSection('projects'); }
         function toggleProjectTasks(id) { editingProjectId = null; expandedProjectId = expandedProjectId === id ? null : id; renderSection('projects'); }
 
-        function saveProjectEdit(wsIdx, id) {
+        async function saveProjectEdit(wsIdx, id) {
             const proj = workspaces[wsIdx].projects.find(p => p.id === id);
             if (!proj) return;
             proj.name = document.getElementById('ep-name').value.trim() || proj.name;
             proj.startDate = document.getElementById('ep-start').value || proj.startDate;
             proj.endDate = document.getElementById('ep-end').value || proj.endDate;
             proj.description = document.getElementById('ep-desc').value.trim();
+            await sbSaveProject(proj, workspaces[wsIdx].title);
             editingProjectId = null;
             renderSection('projects');
         }
 
-        function toggleProjectTask(wsIdx, projId, taskId) {
+        async function toggleProjectTask(wsIdx, projId, taskId) {
             const proj = workspaces[wsIdx].projects?.find(p => p.id === projId);
             const task = proj?.tasks.find(t => t.id === taskId);
-            if (task) { task.completed = !task.completed; renderSection('projects'); }
+            if (task) { task.completed = !task.completed; await sbSaveProject(proj, workspaces[wsIdx].title); renderSection('projects'); }
         }
 
-        function setProjectTaskAssignee(wsIdx, projId, taskId, userId) {
+        async function setProjectTaskAssignee(wsIdx, projId, taskId, userId) {
             const proj = workspaces[wsIdx].projects?.find(p => p.id === projId);
             const task = proj?.tasks.find(t => t.id === taskId);
-            if (task) { task.assigneeId = userId ? Number(userId) : null; task.assigneeName = users.find(u => u.id === task.assigneeId)?.name || null; }
+            if (task) {
+                task.assigneeId = userId ? Number(userId) : null;
+                task.assigneeName = users.find(u => u.id === task.assigneeId)?.name || null;
+                await sbSaveProject(proj, workspaces[wsIdx].title);
+            }
         }
 
-        function setProjectTaskDeadline(wsIdx, projId, taskId, deadline) {
+        async function setProjectTaskDeadline(wsIdx, projId, taskId, deadline) {
             const proj = workspaces[wsIdx].projects?.find(p => p.id === projId);
             const task = proj?.tasks.find(t => t.id === taskId);
-            if (task) { task.deadline = deadline || null; }
+            if (task) { task.deadline = deadline || null; await sbSaveProject(proj, workspaces[wsIdx].title); }
         }
 
-        function addProjectTask(wsIdx, projId) {
+        async function addProjectTask(wsIdx, projId) {
             const input = document.getElementById(`np-task-${projId}`);
             if (!input?.value.trim()) return;
             const proj = workspaces[wsIdx].projects?.find(p => p.id === projId);
             if (!proj) return;
             const maxId = proj.tasks.length ? Math.max(...proj.tasks.map(t => t.id)) : 0;
             proj.tasks.push({ id: maxId + 1, text: input.value.trim(), completed: false, deadline: null, assigneeId: null, assigneeName: null });
+            await sbSaveProject(proj, workspaces[wsIdx].title);
             renderSection('projects');
         }
 
-        function deleteProject(wsIdx, id) {
-            if (!confirm('Удалить проект?')) return;
+        async function deleteProject(wsIdx, id) {
+            if (!confirm('Вы уверены, что хотите удалить проект?')) return;
+            const proj = workspaces[wsIdx].projects.find(p => p.id === id);
+            const hasTasks = proj?.tasks?.length > 0;
+            if (hasTasks) {
+                const deleteTasks = confirm(`Удалить ${proj.tasks.length} связанных задач проекта?`);
+                if (!deleteTasks) {
+                    // Перемещаем задачи в workspace.tasks перед удалением проекта
+                    proj.tasks.forEach(pt => {
+                        const task = { text: pt.text, priority: pt.priority || 'medium', completed: pt.completed, deadline: pt.deadline, taskStart: pt.taskStart, assigneeId: pt.assigneeId, assigneeName: pt.assigneeName };
+                        workspaces[wsIdx].tasks.push(task);
+                        sbSaveTask(task, workspaces[wsIdx].title);
+                    });
+                }
+            }
             workspaces[wsIdx].projects = workspaces[wsIdx].projects.filter(p => p.id !== id);
+            await sbDeleteProject(proj?.supabase_id);
             renderSection('projects');
         }
 
         // === Пример данных ===
         function populateExampleData() {
-            const nd = workspaces[1]; // Noise Dealers
-            if (nd.events.length === 0) {
-                nd.events.push({
-                    id: 1, clientId: 1, clientName: 'Profconcerts', eventName: 'Summer Beats Festival',
-                    startDate: '2026-06-01', endDate: '2026-07-20', marketingBudget: 5000,
-                    totalTickets: 2000, breakeven: 1300, ticketLink: '', landingLink: '',
-                    adSystems: 2, createdAt: new Date().toISOString(), status: 'active',
-                    launchTasks: generateLaunchTasks('2026-06-01')
-                });
-                nd.events.push({
-                    id: 2, clientId: 2, clientName: 'Celebrity Gala', eventName: 'VIP Celebrity Night 2026',
-                    startDate: '2026-07-15', endDate: '2026-10-15', marketingBudget: 12000,
-                    totalTickets: 500, breakeven: 325, ticketLink: '', landingLink: '',
-                    adSystems: 1, createdAt: new Date().toISOString(), status: 'active',
-                    launchTasks: generateLaunchTasks('2026-07-15')
-                });
-            }
-
-            const ignite = workspaces[0];
-            if (!ignite.projects) ignite.projects = [];
-            if (ignite.projects.length === 0) {
-                ignite.projects.push({
-                    id: 1, name: 'SEO-продвижение Q3 2026', clientId: 1, clientName: 'Апартаменты Люкс',
-                    startDate: '2026-06-01', endDate: '2026-08-31', description: 'Комплексное SEO + контент',
-                    status: 'active', tasks: generateProjectTasks('2026-06-01')
-                });
-                ignite.projects.push({
-                    id: 2, name: 'Летняя рекламная кампания', clientId: 2, clientName: 'Riches Properties',
-                    startDate: '2026-05-20', endDate: '2026-07-15', description: 'Контекст + таргет',
-                    status: 'active', tasks: generateProjectTasks('2026-05-20')
-                });
-            }
+            // Данные тянутся из Supabase — пример-данные убраны
+            workspaces.forEach(ws => { if (!ws.projects) ws.projects = []; });
         }
 
         // getAllTasksForTracker определена выше — включает ws, events, projects
 
+        // =============================================
+        // SUPABASE
+        // =============================================
+        const { createClient } = window.supabase;
+        const db = createClient(
+            'https://ynbitjpkelhulhyocwcw.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InluYml0anBrZWxodWxoeW9jd2N3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4NjkzOTcsImV4cCI6MjA5NDQ0NTM5N30.wEHbXTzeHhg-EoglPNtCPZ_LacNaFYr4Hp-U65VlYiI'
+        );
+
+        // ---- Load ----
+        async function loadFromSupabase() {
+            try {
+                // Clients
+                const { data: cls } = await db.from('clients').select('*').order('id');
+                (cls || []).forEach(row => {
+                    const ws = workspaces.find(w => w.title === row.workspace);
+                    if (ws && !ws.clients.find(c => c.supabase_id === row.id)) {
+                        ws.clients.push({
+                            id: ws.clients.length + 1,
+                            supabase_id: row.id,
+                            name: row.name,
+                            category: row.category || '',
+                            status: row.status || 'active',
+                            contact: row.contact || '',
+                            contactRole: row.contact_role || '',
+                            email: row.email || '',
+                            phone: row.phone || '',
+                            budget: row.budget_contract || '₽0',
+                            spent: row.spent || '₽0',
+                            progress: row.progress || 0,
+                            logo: row.logo || '🏢',
+                            nextMeeting: row.next_meeting || '',
+                            projects: []
+                        });
+                    }
+                });
+
+                // Tasks
+                const { data: tsks } = await db.from('tasks').select('*').order('id');
+                (tsks || []).forEach(row => {
+                    const ws = workspaces.find(w => w.title === row.workspace);
+                    if (ws && !ws.tasks.find(t => t.supabase_id === row.id)) {
+                        ws.tasks.push({
+                            supabase_id: row.id,
+                            text: row.text,
+                            priority: row.priority || 'medium',
+                            completed: row.completed || false,
+                            deadline: row.deadline || null,
+                            taskStart: row.task_start || null,
+                            assigneeName: row.assignee_name || null
+                        });
+                    }
+                });
+
+                // Projects
+                const { data: projs } = await db.from('projects').select('*').order('id');
+                (projs || []).forEach(row => {
+                    const ws = workspaces.find(w => w.title === row.workspace);
+                    if (ws) {
+                        if (!ws.projects) ws.projects = [];
+                        if (!ws.projects.find(p => p.supabase_id === row.id)) {
+                            ws.projects.push({
+                                supabase_id: row.id,
+                                id: ws.projects.length + 1,
+                                name: row.name,
+                                clientId: null,
+                                clientName: row.client_name || '',
+                                startDate: row.start_date || '',
+                                endDate: row.end_date || '',
+                                description: row.description || '',
+                                status: row.status || 'active',
+                                tasks: row.tasks || []
+                            });
+                        }
+                    }
+                });
+
+                // Team
+                const { data: tm } = await db.from('team').select('*').order('id');
+                (tm || []).forEach(row => {
+                    const ws = workspaces.find(w => w.title === row.workspace);
+                    if (ws && !ws.team.find(m => m.supabase_id === row.id)) {
+                        ws.team.push({
+                            supabase_id: row.id,
+                            name: row.name,
+                            role: row.role || '',
+                            initials: row.initials || row.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2)
+                        });
+                    }
+                });
+
+                // Budgets
+                const { data: buds } = await db.from('budgets').select('*');
+                (buds || []).forEach(row => {
+                    const ws = workspaces.find(w => w.title === row.workspace);
+                    if (ws && row.total) {
+                        ws.budget = { total: row.total, spent: row.spent || '₽0', percent: row.percent || 0 };
+                    }
+                });
+
+            } catch (err) {
+                console.warn('Supabase load error (using local data):', err);
+            }
+        }
+
+        // ---- Clients ----
+        async function sbSaveClient(client, wsTitle) {
+            const payload = {
+                workspace: wsTitle,
+                name: client.name,
+                category: client.category || '',
+                status: client.status || 'active',
+                contact: client.contact || '',
+                contact_role: client.contactRole || '',
+                email: client.email || '',
+                phone: client.phone || '',
+                budget_contract: client.budget || '₽0',
+                spent: client.spent || '₽0',
+                progress: client.progress || 0,
+                logo: client.logo || '🏢',
+                next_meeting: client.nextMeeting || null
+            };
+            if (client.supabase_id) {
+                await db.from('clients').update(payload).eq('id', client.supabase_id);
+            } else {
+                const { data } = await db.from('clients').insert(payload).select().single();
+                if (data) client.supabase_id = data.id;
+            }
+        }
+
+        async function sbDeleteClient(supabaseId) {
+            if (supabaseId) await db.from('clients').delete().eq('id', supabaseId);
+        }
+
+        // ---- Tasks ----
+        async function sbSaveTask(task, wsTitle) {
+            const payload = {
+                workspace: wsTitle,
+                text: task.text,
+                priority: task.priority || 'medium',
+                completed: task.completed || false,
+                deadline: task.deadline || null,
+                task_start: task.taskStart || null,
+                assignee_name: task.assigneeName || null
+            };
+            if (task.supabase_id) {
+                await db.from('tasks').update(payload).eq('id', task.supabase_id);
+            } else {
+                const { data } = await db.from('tasks').insert(payload).select().single();
+                if (data) task.supabase_id = data.id;
+            }
+        }
+
+        async function sbDeleteTask(supabaseId) {
+            if (supabaseId) await db.from('tasks').delete().eq('id', supabaseId);
+        }
+
+        // ---- Projects ----
+        async function sbSaveProject(proj, wsTitle) {
+            const payload = {
+                workspace: wsTitle,
+                name: proj.name,
+                client_name: proj.clientName || '',
+                start_date: proj.startDate || null,
+                end_date: proj.endDate || null,
+                description: proj.description || '',
+                status: proj.status || 'active',
+                tasks: proj.tasks || []
+            };
+            if (proj.supabase_id) {
+                await db.from('projects').update(payload).eq('id', proj.supabase_id);
+            } else {
+                const { data } = await db.from('projects').insert(payload).select().single();
+                if (data) proj.supabase_id = data.id;
+            }
+        }
+
+        async function sbDeleteProject(supabaseId) {
+            if (supabaseId) await db.from('projects').delete().eq('id', supabaseId);
+        }
+
         let currentWorkspace = 0;
 
         // Initialize
-        function init() {
+        async function init() {
             populateExampleData();
 
             // Render workspace tabs
@@ -2999,10 +3225,15 @@
                 `;
             });
             document.getElementById('workspace-tabs').innerHTML = tabs;
-
-            // Render initial section nav and dashboard
             document.getElementById('workspace-title').textContent = workspaces[0].title;
             document.getElementById('workspace-subtitle').textContent = workspaces[0].subtitle;
+
+            // Загружаем данные из Supabase
+            document.getElementById('dashboard').innerHTML = `
+                <div style="display:flex;align-items:center;justify-content:center;height:200px;gap:12px;color:var(--text-light);">
+                    <span style="font-size:20px;">⏳</span> Загрузка данных...
+                </div>`;
+            await loadFromSupabase();
 
             renderSectionNav();
             renderSection('overview');
